@@ -4,6 +4,7 @@ import yaml from "js-yaml";
 
 const ROOT = process.cwd();
 const DIST_DIR = path.join(ROOT, "dist");
+const ASSETS_DIR = path.join(ROOT, "assets");
 const MONTHS_RU = [
   "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
   "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
@@ -181,6 +182,7 @@ async function main() {
   const tableHtml = tableTemplateText.replace("{{TABLE_CONTENT}}", renderTable(parsed.races));
 
   await fs.mkdir(DIST_DIR, { recursive: true });
+  await fs.cp(ASSETS_DIR, path.join(DIST_DIR, "assets"), { recursive: true });
   await Promise.all([
     fs.writeFile(path.join(DIST_DIR, "index.html"), cardsHtml, "utf8"),
     fs.writeFile(path.join(DIST_DIR, "table.html"), tableHtml, "utf8"),

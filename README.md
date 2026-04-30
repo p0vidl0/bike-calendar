@@ -8,6 +8,7 @@
 - `table.template.html` - отдельный шаблон табличной версии
 - `styles.css` - стили
 - `build.mjs` - сборщик (читает YAML и генерирует HTML)
+- `assets/` - изображения и статические ресурсы
 - `data/races.yaml` - список мероприятий
 - `dist/index.html` - карточная версия
 - `dist/table.html` - табличная версия

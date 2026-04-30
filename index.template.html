@@ -29,10 +29,6 @@
             <a class="view-link" href="./table.html">Таблица</a>
           </nav>
         </div>
-        <label class="toggle">
-          <input type="checkbox" id="upcomingOnly" aria-label="Показывать только предстоящие соревнования" />
-          <span>Только предстоящие</span>
-        </label>
       </header>
 
       <section id="calendar" class="calendar">
@@ -47,11 +43,6 @@
         const themePopover = document.getElementById("themePopover");
         const themeOptions = Array.from(document.querySelectorAll(".theme-option"));
         const themeMenu = document.getElementById("themeMenu");
-        const checkbox = document.getElementById("upcomingOnly");
-        const cards = Array.from(document.querySelectorAll(".race-card"));
-        const monthGroups = Array.from(document.querySelectorAll(".month-group"));
-        const calendar = document.getElementById("calendar");
-
         function applyTheme(mode) {
           if (mode === "auto") {
             document.documentElement.removeAttribute("data-theme");
@@ -87,31 +78,6 @@
           if (!themeMenu.contains(event.target)) {
             themePopover.classList.add("hidden");
             themeButton.setAttribute("aria-expanded", "false");
-          }
-        });
-
-        function refreshMonths() {
-          monthGroups.forEach((group) => {
-            const visibleCards = group.querySelectorAll('.race-card:not([hidden])').length;
-            group.hidden = visibleCards === 0;
-          });
-        }
-
-        checkbox.addEventListener("change", () => {
-          const onlyUpcoming = checkbox.checked;
-          cards.forEach((card) => {
-            if (!onlyUpcoming) {
-              card.hidden = false;
-              return;
-            }
-            const status = card.getAttribute("data-status");
-            card.hidden = status === "past";
-          });
-          refreshMonths();
-
-          const hasVisible = cards.some((card) => !card.hidden);
-          if (!hasVisible) {
-            calendar.innerHTML = '<div class="empty">Нет событий для отображения.</div>';
           }
         });
 

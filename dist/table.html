@@ -29,10 +29,6 @@
             <a class="view-link is-active" href="./table.html" aria-current="page">Таблица</a>
           </nav>
         </div>
-        <label class="toggle">
-          <input type="checkbox" id="upcomingOnly" aria-label="Показывать только предстоящие соревнования" />
-          <span>Только предстоящие</span>
-        </label>
       </header>
 
       <section class="table-wrap">
@@ -256,10 +252,6 @@
         const themePopover = document.getElementById("themePopover");
         const themeOptions = Array.from(document.querySelectorAll(".theme-option"));
         const themeMenu = document.getElementById("themeMenu");
-        const checkbox = document.getElementById("upcomingOnly");
-        const rows = Array.from(document.querySelectorAll("tr.race-row"));
-        const emptyState = document.getElementById("emptyState");
-
         function applyTheme(mode) {
           if (mode === "auto") {
             document.documentElement.removeAttribute("data-theme");
@@ -298,23 +290,7 @@
           }
         });
 
-        function refresh() {
-          const onlyUpcoming = checkbox.checked;
-          rows.forEach((row) => {
-            if (!onlyUpcoming) {
-              row.hidden = false;
-              return;
-            }
-            row.hidden = row.getAttribute("data-status") === "past";
-          });
-
-          const hasVisible = rows.some((row) => !row.hidden);
-          emptyState.classList.toggle("hidden", hasVisible);
-        }
-
-        checkbox.addEventListener("change", refresh);
         initTheme();
-        refresh();
       })();
     </script>
   </body>
