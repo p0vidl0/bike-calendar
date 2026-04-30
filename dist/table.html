@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Календарь велосоревнований 2026 · Таблица</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="theme-menu" id="themeMenu">
+      <button class="theme-button" id="themeButton" aria-label="Переключение темы" aria-haspopup="true" aria-expanded="false">◐</button>
+      <div class="theme-popover hidden" id="themePopover" role="menu" aria-label="Выбор темы">
+        <button class="theme-option" data-theme-mode="auto" role="menuitem">Авто</button>
+        <button class="theme-option" data-theme-mode="dark" role="menuitem">Темная</button>
+        <button class="theme-option" data-theme-mode="light" role="menuitem">Светлая</button>
+      </div>
+    </div>
+    <main class="page">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Омск · 2026</p>
+          <h1>Календарь велосоревнований</h1>
+          <p class="subtitle">Официальные старты, любительские гонки и марафоны в одном месте.</p>
+          <nav class="view-switch" aria-label="Переключение вида календаря">
+            <a class="view-link" href="./index.html">Карточки</a>
+            <a class="view-link is-active" href="./table.html" aria-current="page">Таблица</a>
+          </nav>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="upcomingOnly" aria-label="Показывать только предстоящие соревнования" />
+          <span>Только предстоящие</span>
+        </label>
+      </header>
+
+      <section class="table-wrap">
+        <table class="races-table">
+          <thead>
+            <tr>
+              <th>Дата</th>
+              <th>Мероприятие</th>
+              <th>Организатор</th>
+              <th>Результаты</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            
+      <tr class="race-row" data-status="current">
+        <td>01 мая</td>
+        <td>Муниципальные соревнования города Омска Мемориал Олимпийского чемпиона Г.Комнатова</td>
+        <td>СДЮСШОР №8</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>02 мая</td>
+        <td>Первенство Омской области по велосипедному спорту (шоссе), 1 тур шоссе - критериум</td>
+        <td>Академия велоспорта</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>11 мая - 16 мая</td>
+        <td>Межрегиональные соревнования по велосипедному спорту (шоссе), XXXXIV юношеская многодневная гонка по велосипедному спорту, посвященная Дню Победы</td>
+        <td>Академия велоспорта</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>16 мая</td>
+        <td>Primavera (Strava)</td>
+        <td>Сметюк Е.</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>17 мая</td>
+        <td>1 этап: Кросс-кантри велогонка «Прудки»</td>
+        <td>Amateur Cycling League</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>24 мая</td>
+        <td>Чемпионат Омской области по велосипедному спорту (маунтинбайк)</td>
+        <td>Академия велоспорта</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>30 мая</td>
+        <td>Gravel’10</td>
+        <td>Сметюк Е.</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="approx">
+        <td>Июнь-июль</td>
+        <td>Первенство Омской области по велосипедному спорту (шоссе), 2 тур шоссе – критериум</td>
+        <td>Академия велоспорта</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="approx">
+        <td>Июнь-июль</td>
+        <td>Муниципальные соревнования города Омска Мемориал заслуженного тренера СССР Л. И.Живодерова</td>
+        <td>СДЮСШОР №8</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>06 июня</td>
+        <td>Red Rock Road Race (Strava)</td>
+        <td>Сметюк Е.</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>15 июня - 18 июня</td>
+        <td>Всероссийские соревнования по велосипедному спорту (шоссе)</td>
+        <td>Академия велоспорта</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>21 июня</td>
+        <td>2 этап: Кросс-кантри велогонка «Битва на озере»</td>
+        <td>Amateur Cycling League</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>27 июня</td>
+        <td>Gravel’20</td>
+        <td>Сметюк Е.</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>28 июня</td>
+        <td>Марафон «Крутоган»</td>
+        <td>Омские веломарафоны</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>11 июля - 12 июля</td>
+        <td>Муниципальные соревнования города Омска памяти заслуженного тренера России В.А. Зражевского</td>
+        <td>СДЮСШОР №8</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>12 июля</td>
+        <td>3 этап: ХСО в Парке Победы</td>
+        <td>Amateur Cycling League</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>17 июля - 25 июля</td>
+        <td>Strava Tour (Strava)</td>
+        <td>Сметюк Е.</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>27 июля</td>
+        <td>Чемпионат и первенство города Омска по велосипедному спорту маунтинбайк</td>
+        <td>СДЮСШОР №8</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>02 августа</td>
+        <td>4 этап: Онлайн веломарафон «Мяу🐱Марафон»</td>
+        <td>Amateur Cycling League</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>09 августа</td>
+        <td>Муниципальные соревнования города Омска по велосипедному спорту-маунтинбайк «Березовая роща»</td>
+        <td>СДЮСШОР №8</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>15 августа</td>
+        <td>Omsk Gravel Classic (Strava)</td>
+        <td>Сметюк Е.</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>23 августа</td>
+        <td>5 этап: Кросс-кантри велогонка «Карьер»</td>
+        <td>Amateur Cycling League</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>24 августа - 30 августа</td>
+        <td>II Всероссийская спартакиада между субъектами Российской Федерации по летним видам спорта среди сильнейших спортсменов 2026 года</td>
+        <td>Академия велоспорта</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="approx">
+        <td>Конец августа/начало сентября</td>
+        <td>Gravel’30</td>
+        <td>Сметюк Е.</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="approx">
+        <td>Сентябрь</td>
+        <td>Пивной Велокросс</td>
+        <td>Сметюк Е.</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>13 сентября</td>
+        <td>6 этап: Кросс-кантри велогонка «Финал сезона»</td>
+        <td>Amateur Cycling League</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>27 сентября</td>
+        <td>Осенний веломарафон</td>
+        <td>Омские веломарафоны</td>
+        <td>—</td>
+      </tr>
+    
+      <tr class="race-row" data-status="upcoming">
+        <td>04 октября</td>
+        <td>Муниципальные соревнования города Омска по велосипедному спорту-маунтинбайк «Осенний старт»</td>
+        <td>СДЮСШОР №8</td>
+        <td>—</td>
+      </tr>
+    
+          </tbody>
+        </table>
+      </section>
+      <div id="emptyState" class="empty hidden">Нет событий для отображения.</div>
+    </main>
+
+    <script>
+      (() => {
+        const STORAGE_KEY = "theme-mode";
+        const themeButton = document.getElementById("themeButton");
+        const themePopover = document.getElementById("themePopover");
+        const themeOptions = Array.from(document.querySelectorAll(".theme-option"));
+        const themeMenu = document.getElementById("themeMenu");
+        const checkbox = document.getElementById("upcomingOnly");
+        const rows = Array.from(document.querySelectorAll("tr.race-row"));
+        const emptyState = document.getElementById("emptyState");
+
+        function applyTheme(mode) {
+          if (mode === "auto") {
+            document.documentElement.removeAttribute("data-theme");
+          } else {
+            document.documentElement.setAttribute("data-theme", mode);
+          }
+          themeOptions.forEach((button) => {
+            button.classList.toggle("is-active", button.dataset.themeMode === mode);
+          });
+        }
+
+        function initTheme() {
+          const savedMode = localStorage.getItem(STORAGE_KEY) || "auto";
+          applyTheme(savedMode);
+        }
+
+        themeButton.addEventListener("click", () => {
+          const isHidden = themePopover.classList.toggle("hidden");
+          themeButton.setAttribute("aria-expanded", String(!isHidden));
+        });
+
+        themeOptions.forEach((button) => {
+          button.addEventListener("click", () => {
+            const mode = button.dataset.themeMode;
+            localStorage.setItem(STORAGE_KEY, mode);
+            applyTheme(mode);
+            themePopover.classList.add("hidden");
+            themeButton.setAttribute("aria-expanded", "false");
+          });
+        });
+
+        document.addEventListener("click", (event) => {
+          if (!themeMenu.contains(event.target)) {
+            themePopover.classList.add("hidden");
+            themeButton.setAttribute("aria-expanded", "false");
+          }
+        });
+
+        function refresh() {
+          const onlyUpcoming = checkbox.checked;
+          rows.forEach((row) => {
+            if (!onlyUpcoming) {
+              row.hidden = false;
+              return;
+            }
+            row.hidden = row.getAttribute("data-status") === "past";
+          });
+
+          const hasVisible = rows.some((row) => !row.hidden);
+          emptyState.classList.toggle("hidden", hasVisible);
+        }
+
+        checkbox.addEventListener("change", refresh);
+        initTheme();
+        refresh();
+      })();
+    </script>
+  </body>
+</html>

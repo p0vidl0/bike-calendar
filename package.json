@@ -1,0 +1,16 @@
+{
+  "name": "omsk-bike-calendar",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "npm run build && parcel serve dist/index.html dist/table.html --dist-dir .parcel-dev --open /index.html"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "parcel": "^2.16.4"
+  }
+}
