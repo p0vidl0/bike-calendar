@@ -25,6 +25,15 @@ function toDate(value) {
   return value ? new Date(`${value}T00:00:00`) : null;
 }
 
+/** Локальная календарная дата для data-атрибутов (клиентский пересчёт статуса). */
+function isoLocalDate(d) {
+  if (!d) return "";
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
 function normalizeRace(raw, index) {
   if (!raw || typeof raw !== "object") {
     throw new Error(`Запись #${index + 1}: некорректный объект`);
@@ -76,17 +85,19 @@ function monthTitle(key) {
   return key === 12 ? "С неопределенной датой" : MONTHS_RU[key];
 }
 
+function sortRacesByStartDate(a, b) {
+  if (!a.start && !b.start) return 0;
+  if (!a.start) return 1;
+  if (!b.start) return -1;
+  return a.start - b.start;
+}
+
 function renderCalendar(races) {
   const now = new Date();
   const prepared = races
     .map(normalizeRace)
     .map((race) => ({ ...race, status: getStatus(race, now) }))
-    .sort((a, b) => {
-      if (!a.start && !b.start) return 0;
-      if (!a.start) return 1;
-      if (!b.start) return -1;
-      return a.start - b.start;
-    });
+    .sort(sortRacesByStartDate);
 
   const groups = new Map();
   for (const race of prepared) {
@@ -104,15 +115,16 @@ function renderCalendar(races) {
         const organizer = escapeHtml(race.organizer);
         const statusClass = `status-${race.status.key}`;
         const statusLabel = escapeHtml(race.status.label);
-        const statusBadge = race.status.key === "upcoming"
-          ? ""
-          : `<span class="status ${statusClass}">${statusLabel}</span>`;
+        const statusBadge = `<span class="status ${statusClass} race-status-label${race.status.key === "upcoming" ? " hidden" : ""}" data-role="race-status">${statusLabel}</span>`;
+        const dp = escapeHtml(race.datePrecision);
+        const ds = escapeHtml(isoLocalDate(race.start));
+        const de = escapeHtml(isoLocalDate(race.end));
         const resultsLink = race.resultsUrl
           ? `<a class="results-link" href="${escapeHtml(race.resultsUrl)}" target="_blank" rel="noreferrer">Результаты</a>`
           : "";
 
         return `
-          <article class="race-card" data-status="${escapeHtml(race.status.key)}">
+          <article class="race-card" data-status="${escapeHtml(race.status.key)}" data-date-precision="${dp}" data-start="${ds}" data-end="${de}">
             <div class="race-date">${date}</div>
             <h3 class="race-name">${name}</h3>
             <p class="race-organizer">Организатор: ${organizer}</p>
@@ -139,12 +151,7 @@ function renderTable(races) {
   const prepared = races
     .map(normalizeRace)
     .map((race) => ({ ...race, status: getStatus(race, now) }))
-    .sort((a, b) => {
-      if (!a.start && !b.start) return 0;
-      if (!a.start) return 1;
-      if (!b.start) return -1;
-      return a.start - b.start;
-    });
+    .sort(sortRacesByStartDate);
 
   return prepared.map((race) => {
     const date = escapeHtml(formatRaceDate(race));
@@ -154,8 +161,12 @@ function renderTable(races) {
       ? `<a class="results-link" href="${escapeHtml(race.resultsUrl)}" target="_blank" rel="noreferrer">Открыть</a>`
       : "—";
 
+    const dp = escapeHtml(race.datePrecision);
+    const ds = escapeHtml(isoLocalDate(race.start));
+    const de = escapeHtml(isoLocalDate(race.end));
+
     return `
-      <tr class="race-row" data-status="${escapeHtml(race.status.key)}">
+      <tr class="race-row" data-status="${escapeHtml(race.status.key)}" data-date-precision="${dp}" data-start="${ds}" data-end="${de}">
         <td>${date}</td>
         <td>${name}</td>
         <td>${organizer}</td>
@@ -166,9 +177,8 @@ function renderTable(races) {
 }
 
 async function main() {
-  const [cardsTemplateText, tableTemplateText, yamlText, stylesText] = await Promise.all([
+  const [pageTemplateText, yamlText, stylesText] = await Promise.all([
     fs.readFile(path.join(ROOT, "index.template.html"), "utf8"),
-    fs.readFile(path.join(ROOT, "table.template.html"), "utf8"),
     fs.readFile(path.join(ROOT, "data", "races.yaml"), "utf8"),
     fs.readFile(path.join(ROOT, "styles.css"), "utf8"),
   ]);
@@ -178,18 +188,33 @@ async function main() {
     throw new Error("Формат data/races.yaml неверный: ожидается массив races");
   }
 
-  const cardsHtml = cardsTemplateText.replace("{{CALENDAR_CONTENT}}", renderCalendar(parsed.races));
-  const tableHtml = tableTemplateText.replace("{{TABLE_CONTENT}}", renderTable(parsed.races));
+  const pageHtml = pageTemplateText
+    .replace("{{CALENDAR_CONTENT}}", renderCalendar(parsed.races))
+    .replace("{{TABLE_CONTENT}}", renderTable(parsed.races));
+
+  const tableRedirectHtml = `<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="refresh" content="0;url=./index.html" />
+    <title>Переход…</title>
+    <script>location.replace("./index.html");</script>
+  </head>
+  <body>
+    <p><a href="./index.html">Календарь</a></p>
+  </body>
+</html>
+`;
 
   await fs.mkdir(DIST_DIR, { recursive: true });
   await fs.cp(ASSETS_DIR, path.join(DIST_DIR, "assets"), { recursive: true });
   await Promise.all([
-    fs.writeFile(path.join(DIST_DIR, "index.html"), cardsHtml, "utf8"),
-    fs.writeFile(path.join(DIST_DIR, "table.html"), tableHtml, "utf8"),
+    fs.writeFile(path.join(DIST_DIR, "index.html"), pageHtml, "utf8"),
+    fs.writeFile(path.join(DIST_DIR, "table.html"), tableRedirectHtml, "utf8"),
     fs.writeFile(path.join(DIST_DIR, "styles.css"), stylesText, "utf8"),
   ]);
 
-  console.log("Сборка завершена: dist/index.html, dist/table.html");
+  console.log("Сборка завершена: dist/index.html (dist/table.html — редирект на index.html)");
 }
 
 main().catch((error) => {

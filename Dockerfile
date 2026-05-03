@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
-COPY build.mjs index.template.html table.template.html styles.css ./
+COPY build.mjs index.template.html styles.css ./
 COPY assets ./assets
 COPY data ./data
 

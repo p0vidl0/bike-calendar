@@ -109,29 +109,74 @@ h1 {
   line-height: 1.45;
 }
 
-.view-switch {
-  margin-top: 14px;
-  display: inline-flex;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 999px;
-  padding: 4px;
-  box-shadow: var(--shadow-soft);
-  backdrop-filter: blur(12px);
+.settings-group {
+  display: grid;
+  gap: 4px;
 }
 
-.view-link {
-  padding: 8px 14px;
-  color: rgba(255, 255, 255, 0.82);
-  text-decoration: none;
-  border-radius: 999px;
+.settings-group + .settings-group {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.settings-section-label {
+  margin: 0 0 4px;
+  font-size: 0.72rem;
   font-weight: 600;
-  font-size: 0.92rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
-.view-link.is-active {
-  color: #fff;
-  background: linear-gradient(90deg, var(--accent), #f97316);
+.calendar-view-option {
+  text-align: left;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text);
+  border-radius: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.calendar-view-option.is-active {
+  background: var(--surface-muted);
+  border-color: var(--border);
+}
+
+html[data-calendar-view="auto"] .calendar {
+  display: grid;
+}
+
+html[data-calendar-view="auto"] .table-wrap {
+  display: none;
+}
+
+@media (min-width: 741px) {
+  html[data-calendar-view="auto"] .calendar {
+    display: none;
+  }
+
+  html[data-calendar-view="auto"] .table-wrap {
+    display: block;
+  }
+}
+
+html[data-calendar-view="cards"] .calendar {
+  display: grid;
+}
+
+html[data-calendar-view="cards"] .table-wrap {
+  display: none;
+}
+
+html[data-calendar-view="table"] .calendar {
+  display: none;
+}
+
+html[data-calendar-view="table"] .table-wrap {
+  display: block;
 }
 
 .theme-menu {
@@ -146,14 +191,33 @@ h1 {
 .theme-button {
   width: 42px;
   height: 42px;
+  padding: 0;
   border: 1px solid var(--border);
   background: color-mix(in srgb, var(--surface) 72%, transparent);
   color: var(--text);
   border-radius: 999px;
   box-shadow: var(--shadow-soft);
   cursor: pointer;
-  font-size: 1.05rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   backdrop-filter: blur(12px);
+}
+
+.theme-button-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+  opacity: 0.78;
+}
+
+.theme-button-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .theme-popover {
@@ -239,6 +303,28 @@ h1 {
   transform: translateY(-1px);
   border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
   box-shadow: var(--shadow-soft);
+}
+
+.race-card[data-status="past"] {
+  opacity: 0.74;
+  background: color-mix(in srgb, var(--surface) 88%, var(--surface-muted));
+  border-color: color-mix(in srgb, var(--border) 82%, transparent);
+}
+
+.race-card[data-status="past"] .race-name {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.race-card[data-status="past"] .race-date::before,
+.race-card[data-status="past"] .race-organizer::before {
+  opacity: 0.42;
+}
+
+.race-card[data-status="past"]:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: color-mix(in srgb, var(--border) 90%, transparent);
 }
 
 .race-date {
@@ -403,8 +489,21 @@ h1 {
   background: color-mix(in srgb, var(--surface) 85%, var(--surface-muted));
 }
 
+.race-row[data-status="past"] td {
+  color: color-mix(in srgb, var(--text-muted) 92%, var(--text));
+  background: color-mix(in srgb, var(--surface-muted) 28%, var(--surface));
+}
+
+.race-row[data-status="past"]:nth-child(even) td {
+  background: color-mix(in srgb, var(--surface-muted) 38%, var(--surface));
+}
+
 .race-row:hover td {
   background: color-mix(in srgb, var(--surface) 60%, var(--surface-muted));
+}
+
+.race-row[data-status="past"]:hover td {
+  background: color-mix(in srgb, var(--surface-muted) 42%, var(--surface));
 }
 
 a:focus-visible,
@@ -423,9 +522,6 @@ input:focus-visible {
   .hero {
     flex-direction: column;
     align-items: stretch;
-  }
-  .view-switch {
-    width: fit-content;
   }
 
   .races-table {

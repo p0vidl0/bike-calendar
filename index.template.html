@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" data-calendar-view="auto">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,11 +11,20 @@
   </head>
   <body>
     <div class="theme-menu" id="themeMenu">
-      <button class="theme-button" id="themeButton" aria-label="Переключение темы" aria-haspopup="true" aria-expanded="false">◐</button>
-      <div class="theme-popover hidden" id="themePopover" role="menu" aria-label="Выбор темы">
-        <button class="theme-option" data-theme-mode="auto" role="menuitem">Авто</button>
-        <button class="theme-option" data-theme-mode="dark" role="menuitem">Темная</button>
-        <button class="theme-option" data-theme-mode="light" role="menuitem">Светлая</button>
+      <button class="theme-button" id="themeButton" aria-label="Настройки отображения" aria-haspopup="true" aria-expanded="false"><span class="theme-button-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /><circle cx="12" cy="12" r="3" /></svg></span></button>
+      <div class="theme-popover hidden" id="themePopover" role="region" aria-label="Настройки">
+        <div class="settings-group" role="group" aria-label="Тема">
+          <p class="settings-section-label">Тема</p>
+          <button class="theme-option" type="button" data-theme-mode="auto">Авто</button>
+          <button class="theme-option" type="button" data-theme-mode="dark">Темная</button>
+          <button class="theme-option" type="button" data-theme-mode="light">Светлая</button>
+        </div>
+        <div class="settings-group" role="group" aria-label="Вид календаря">
+          <p class="settings-section-label">Вид календаря</p>
+          <button class="calendar-view-option" type="button" data-calendar-view="auto">Авто</button>
+          <button class="calendar-view-option" type="button" data-calendar-view="cards">Карточки</button>
+          <button class="calendar-view-option" type="button" data-calendar-view="table">Таблица</button>
+        </div>
       </div>
     </div>
     <main class="page">
@@ -24,25 +33,41 @@
           <p class="eyebrow">Омск · 2026</p>
           <h1>Календарь велосоревнований</h1>
           <p class="subtitle">Официальные старты, любительские гонки и марафоны в одном месте.</p>
-          <nav class="view-switch" aria-label="Переключение вида календаря">
-            <a class="view-link is-active" href="./index.html" aria-current="page">Карточки</a>
-            <a class="view-link" href="./table.html">Таблица</a>
-          </nav>
         </div>
       </header>
 
       <section id="calendar" class="calendar">
         {{CALENDAR_CONTENT}}
       </section>
+
+      <section class="table-wrap" aria-label="Таблица стартов">
+        <table class="races-table">
+          <thead>
+            <tr>
+              <th>Дата</th>
+              <th>Мероприятие</th>
+              <th>Организатор</th>
+              <th>Результаты</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            {{TABLE_CONTENT}}
+          </tbody>
+        </table>
+      </section>
+      <div id="emptyState" class="empty hidden">Нет событий для отображения.</div>
     </main>
 
     <script>
       (() => {
-        const STORAGE_KEY = "theme-mode";
+        const THEME_KEY = "theme-mode";
+        const CALENDAR_VIEW_KEY = "calendar-view";
         const themeButton = document.getElementById("themeButton");
         const themePopover = document.getElementById("themePopover");
         const themeOptions = Array.from(document.querySelectorAll(".theme-option"));
+        const calendarViewOptions = Array.from(document.querySelectorAll(".calendar-view-option"));
         const themeMenu = document.getElementById("themeMenu");
+
         function applyTheme(mode) {
           if (mode === "auto") {
             document.documentElement.removeAttribute("data-theme");
@@ -54,9 +79,21 @@
           });
         }
 
+        function applyCalendarView(mode) {
+          document.documentElement.setAttribute("data-calendar-view", mode);
+          calendarViewOptions.forEach((button) => {
+            button.classList.toggle("is-active", button.dataset.calendarView === mode);
+          });
+        }
+
         function initTheme() {
-          const savedMode = localStorage.getItem(STORAGE_KEY) || "auto";
+          const savedMode = localStorage.getItem(THEME_KEY) || "auto";
           applyTheme(savedMode);
+        }
+
+        function initCalendarView() {
+          const saved = localStorage.getItem(CALENDAR_VIEW_KEY) || "auto";
+          applyCalendarView(saved);
         }
 
         themeButton.addEventListener("click", () => {
@@ -67,8 +104,18 @@
         themeOptions.forEach((button) => {
           button.addEventListener("click", () => {
             const mode = button.dataset.themeMode;
-            localStorage.setItem(STORAGE_KEY, mode);
+            localStorage.setItem(THEME_KEY, mode);
             applyTheme(mode);
+            themePopover.classList.add("hidden");
+            themeButton.setAttribute("aria-expanded", "false");
+          });
+        });
+
+        calendarViewOptions.forEach((button) => {
+          button.addEventListener("click", () => {
+            const mode = button.dataset.calendarView;
+            localStorage.setItem(CALENDAR_VIEW_KEY, mode);
+            applyCalendarView(mode);
             themePopover.classList.add("hidden");
             themeButton.setAttribute("aria-expanded", "false");
           });
@@ -82,6 +129,56 @@
         });
 
         initTheme();
+        initCalendarView();
+      })();
+    </script>
+    <script>
+      (() => {
+        const L = { approx: "Дата уточняется", past: "Прошла", current: "Сегодня", upcoming: "Скоро" };
+
+        function statusForElement(el, now) {
+          if (el.dataset.datePrecision === "approx") {
+            return { key: "approx", label: L.approx };
+          }
+          const startStr = el.dataset.start || "";
+          const endStr = el.dataset.end || "";
+          if (!startStr || !endStr) {
+            return { key: "approx", label: L.approx };
+          }
+          const start = new Date(`${startStr}T00:00:00`);
+          const end = new Date(`${endStr}T00:00:00`);
+          const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+          if (end < today) return { key: "past", label: L.past };
+          if (start <= today && end >= today) return { key: "current", label: L.current };
+          return { key: "upcoming", label: L.upcoming };
+        }
+
+        function applyCard(card, s) {
+          card.dataset.status = s.key;
+          const badge = card.querySelector('[data-role="race-status"]');
+          if (!badge) return;
+          badge.textContent = s.label;
+          badge.className = `status race-status-label status-${s.key}${s.key === "upcoming" ? " hidden" : ""}`;
+        }
+
+        function applyRow(row, s) {
+          row.dataset.status = s.key;
+        }
+
+        function refresh() {
+          const now = new Date();
+          document.querySelectorAll("#calendar .race-card").forEach((card) => {
+            applyCard(card, statusForElement(card, now));
+          });
+          document.querySelectorAll("#tableBody .race-row").forEach((row) => {
+            applyRow(row, statusForElement(row, now));
+          });
+        }
+
+        refresh();
+        document.addEventListener("visibilitychange", () => {
+          if (document.visibilityState === "visible") refresh();
+        });
       })();
     </script>
   </body>

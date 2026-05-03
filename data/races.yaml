@@ -3,7 +3,7 @@ races:
     datePrecision: exact
     name: "Первенство Омской области по велосипедному спорту (шоссе), 1 тур шоссе - критериум"
     organizer: "Академия велоспорта"
-    resultsUrl: null
+    resultsUrl: "https://t.me/akademiyavelosporta/4054"
 
   - date:
       start: "2026-05-11"
