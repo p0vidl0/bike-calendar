@@ -69,7 +69,7 @@ docker build -t omsk-bike:local .
 
 ## Деплой (GitHub Actions → Ubuntu / Docker / Traefik)
 
-При push в ветку `master` workflow [.github/workflows/deploy-vps.yml](.github/workflows/deploy-vps.yml) собирает образ, публикует его в **GHCR** и по SSH обновляет стек на сервере (`docker compose pull` и `up -d`) в каталоге из секрета.
+При push в ветку `master` workflow [.github/workflows/deploy-vps.yml](.github/workflows/deploy-vps.yml) собирает образ, публикует его в **GHCR** и по SSH обновляет стек на сервере (`docker-compose pull` и `up -d`; на сервере ожидается классический `docker-compose` v1 и файл `.env` в каталоге деплоя) в каталоге из секрета.
 
 На сервере один раз должны быть установлены Docker и Compose, сеть Traefik (в примере по умолчанию имя сети — `theta-brige`, см. `docker-compose.yaml`). Для приватного пакета GHCR выполните на сервере `docker login ghcr.io` с PAT (`read:packages`). Для публичного образа логин не нужен.
 

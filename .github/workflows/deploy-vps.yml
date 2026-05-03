@@ -103,5 +103,6 @@ jobs:
             [ -n "${TRAEFIK_CERT_RESOLVER:-}" ] && echo "TRAEFIK_CERT_RESOLVER=${TRAEFIK_CERT_RESOLVER}"
           } > compose.env
           ssh "${SSH_USER}@${SSH_HOST}" "mkdir -p '${REMOTE_DIR}'"
-          scp compose.env docker-compose.yaml "${SSH_USER}@${SSH_HOST}:${REMOTE_DIR}/"
-          ssh "${SSH_USER}@${SSH_HOST}" "cd '${REMOTE_DIR}' && docker compose --env-file compose.env -f docker-compose.yaml pull && docker compose --env-file compose.env -f docker-compose.yaml up -d"
+          scp compose.env "${SSH_USER}@${SSH_HOST}:${REMOTE_DIR}/.env"
+          scp docker-compose.yaml "${SSH_USER}@${SSH_HOST}:${REMOTE_DIR}/"
+          ssh "${SSH_USER}@${SSH_HOST}" "cd '${REMOTE_DIR}' && docker-compose -f docker-compose.yaml pull && docker-compose -f docker-compose.yaml up -d"
