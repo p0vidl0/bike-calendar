@@ -12,3 +12,6 @@ pnpm-debug.log*
 
 # OS files
 .DS_Store
+
+# Local / CI
+compose.env

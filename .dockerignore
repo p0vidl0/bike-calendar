@@ -1,0 +1,12 @@
+node_modules
+.git
+.github
+dist
+.parcel-cache
+.parcel-dev
+*.md
+.env
+.env.*
+compose.env
+.DS_Store
+pnpm-debug.log*

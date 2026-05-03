@@ -1,0 +1,107 @@
+name: Deploy VPS
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-vps
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-and-push:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.image_ref.outputs.image }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=sha,prefix=
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push image
+        id: docker_push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Image reference for deploy
+        id: image_ref
+        run: echo "image=ghcr.io/${{ github.repository }}@${{ steps.docker_push.outputs.digest }}" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Start ssh-agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_KEY }}
+
+      - name: Configure SSH known_hosts
+        env:
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          if [ -n "$SSH_KNOWN_HOSTS" ]; then
+            echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          else
+            ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
+          fi
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Upload compose files and restart stack
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PATH: ${{ secrets.SSH_PATH }}
+          CALENDAR_BIKE_OMSK_IMAGE: ${{ needs.build-and-push.outputs.image }}
+          OMSK_BIKE_DOMAIN: ${{ secrets.OMSK_BIKE_DOMAIN }}
+          TRAEFIK_NETWORK: ${{ secrets.TRAEFIK_NETWORK }}
+          TRAEFIK_CERT_RESOLVER: ${{ secrets.TRAEFIK_CERT_RESOLVER }}
+        run: |
+          set -euo pipefail
+          REMOTE_DIR="${SSH_PATH%/}"
+          {
+            echo "CALENDAR_BIKE_OMSK_IMAGE=${CALENDAR_BIKE_OMSK_IMAGE}"
+            echo "OMSK_BIKE_DOMAIN=${OMSK_BIKE_DOMAIN}"
+            [ -n "${TRAEFIK_NETWORK:-}" ] && echo "TRAEFIK_NETWORK=${TRAEFIK_NETWORK}"
+            [ -n "${TRAEFIK_CERT_RESOLVER:-}" ] && echo "TRAEFIK_CERT_RESOLVER=${TRAEFIK_CERT_RESOLVER}"
+          } > compose.env
+          ssh "${SSH_USER}@${SSH_HOST}" "mkdir -p '${REMOTE_DIR}'"
+          scp compose.env docker-compose.yaml "${SSH_USER}@${SSH_HOST}:${REMOTE_DIR}/"
+          ssh "${SSH_USER}@${SSH_HOST}" "cd '${REMOTE_DIR}' && docker compose --env-file compose.env -f docker-compose.yaml pull && docker compose --env-file compose.env -f docker-compose.yaml up -d"
