@@ -11,7 +11,7 @@ races:
     datePrecision: range
     name: "Межрегиональные соревнования по велосипедному спорту (шоссе), XXXXIV юношеская многодневная гонка по велосипедному спорту, посвященная Дню Победы"
     organizer: "Академия велоспорта"
-    organizerUrl: "https://vk.com/akademiyavelosporta"
+    organizerUrl: "https://vk.ru/omskakademiyavelosporta"
     resultsUrl: null
 
   - date: "2026-05-16"
@@ -34,7 +34,7 @@ races:
     datePrecision: exact
     name: "Чемпионат Омской области по велосипедному спорту (маунтинбайк)"
     organizer: "Академия велоспорта"
-    organizerUrl: "https://vk.com/akademiyavelosporta"
+    organizerUrl: "https://vk.ru/omskakademiyavelosporta"
     resultsUrl: null
 
   - date: "2026-05-30"
@@ -51,7 +51,7 @@ races:
     datePrecision: approx
     name: "Первенство Омской области по велосипедному спорту (шоссе), 2 тур шоссе – критериум"
     organizer: "Академия велоспорта"
-    organizerUrl: "https://vk.com/akademiyavelosporta"
+    organizerUrl: "https://vk.ru/omskakademiyavelosporta"
     resultsUrl: null
 
   - dateText: "Июнь-июль"
@@ -77,12 +77,12 @@ races:
     datePrecision: range
     name: "Всероссийские соревнования по велосипедному спорту (шоссе)"
     organizer: "Академия велоспорта"
-    organizerUrl: "https://vk.com/akademiyavelosporta"
+    organizerUrl: "https://vk.ru/omskakademiyavelosporta"
     resultsUrl: null
 
   - date: "2026-06-20"
     datePrecision: exact
-    name: "МЕГА Критериум vol.1"
+    name: "МЕГА Критериум vol.1 (шоссе)"
     organizer: "Pédalage.cc и Академия велоспорта"
     resultsUrl: null
 
@@ -173,7 +173,7 @@ races:
     datePrecision: range
     name: "II Всероссийская спартакиада между субъектами Российской Федерации по летним видам спорта среди сильнейших спортсменов 2026 года"
     organizer: "Академия велоспорта"
-    organizerUrl: "https://vk.com/akademiyavelosporta"
+    organizerUrl: "https://vk.ru/omskakademiyavelosporta"
     resultsUrl: null
 
   - dateText: "Конец августа/начало сентября"
