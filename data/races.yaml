@@ -80,6 +80,12 @@ races:
     organizerUrl: "https://vk.com/akademiyavelosporta"
     resultsUrl: null
 
+  - date: "2026-06-20"
+    datePrecision: exact
+    name: "МЕГА Критериум vol.1"
+    organizer: "Pédalage.cc и Академия велоспорта"
+    resultsUrl: null
+
   - date: "2026-06-21"
     datePrecision: exact
     name: "2 этап: Кросс-кантри велогонка «Битва на озере»"
