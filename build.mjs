@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import yaml from "js-yaml";
@@ -11,6 +12,11 @@ const MONTHS_RU = [
 ];
 
 const dateFormatter = new Intl.DateTimeFormat("ru-RU", { day: "2-digit", month: "long" });
+
+/** Короткий хэш для ?v= в URL стилей (сброс кэша браузера после изменения CSS). */
+function stylesCacheKey(css) {
+  return createHash("sha256").update(css).digest("hex").slice(0, 12);
+}
 
 function escapeHtml(value) {
   return String(value)
@@ -202,7 +208,10 @@ async function main() {
     throw new Error("Формат data/races.yaml неверный: ожидается массив races");
   }
 
+  const stylesUrl = `./styles.css?v=${stylesCacheKey(stylesText)}`;
+
   const pageHtml = pageTemplateText
+    .replace("{{STYLES_URL}}", stylesUrl)
     .replace("{{CALENDAR_CONTENT}}", renderCalendar(parsed.races))
     .replace("{{TABLE_CONTENT}}", renderTable(parsed.races));
 
