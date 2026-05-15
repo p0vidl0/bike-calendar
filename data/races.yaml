@@ -11,30 +11,37 @@ races:
     datePrecision: range
     name: "Межрегиональные соревнования по велосипедному спорту (шоссе), XXXXIV юношеская многодневная гонка по велосипедному спорту, посвященная Дню Победы"
     organizer: "Академия велоспорта"
+    organizerUrl: "https://vk.com/akademiyavelosporta"
     resultsUrl: null
 
   - date: "2026-05-16"
     datePrecision: exact
     name: "Primavera (Strava)"
     organizer: "Сметюк Е."
+    organizerUrl: "https://vk.com/id23079204"
+    eventUrl: "https://vk.com/wall-185909723_983"
     resultsUrl: null
 
   - date: "2026-05-17"
     datePrecision: exact
     name: "1 этап: Кросс-кантри велогонка «Прудки»"
     organizer: "Amateur Cycling League"
+    organizerUrl: "https://vk.com/kk_omsk"
+    eventUrl: "https://vk.com/wall-206728976_441"
     resultsUrl: null
 
   - date: "2026-05-24"
     datePrecision: exact
     name: "Чемпионат Омской области по велосипедному спорту (маунтинбайк)"
     organizer: "Академия велоспорта"
+    organizerUrl: "https://vk.com/akademiyavelosporta"
     resultsUrl: null
 
   - date: "2026-05-30"
     datePrecision: exact
     name: "Gravel’10"
     organizer: "Сметюк Е."
+    organizerUrl: "https://vk.com/id23079204"
     resultsUrl: null
 
   - dateText: "Июнь-июль"
@@ -44,6 +51,7 @@ races:
     datePrecision: approx
     name: "Первенство Омской области по велосипедному спорту (шоссе), 2 тур шоссе – критериум"
     organizer: "Академия велоспорта"
+    organizerUrl: "https://vk.com/akademiyavelosporta"
     resultsUrl: null
 
   - dateText: "Июнь-июль"
@@ -53,12 +61,14 @@ races:
     datePrecision: approx
     name: "Муниципальные соревнования города Омска Мемориал заслуженного тренера СССР Л. И.Живодерова"
     organizer: "СДЮСШОР №8"
+    organizerUrl: "https://vk.com/veloschool8"
     resultsUrl: null
 
   - date: "2026-06-06"
     datePrecision: exact
     name: "Red Rock Road Race (Strava)"
     organizer: "Сметюк Е."
+    organizerUrl: "https://vk.com/id23079204"
     resultsUrl: null
 
   - date:
@@ -67,24 +77,28 @@ races:
     datePrecision: range
     name: "Всероссийские соревнования по велосипедному спорту (шоссе)"
     organizer: "Академия велоспорта"
+    organizerUrl: "https://vk.com/akademiyavelosporta"
     resultsUrl: null
 
   - date: "2026-06-21"
     datePrecision: exact
     name: "2 этап: Кросс-кантри велогонка «Битва на озере»"
     organizer: "Amateur Cycling League"
+    organizerUrl: "https://vk.com/kk_omsk"
     resultsUrl: null
 
   - date: "2026-06-27"
     datePrecision: exact
     name: "Gravel’20"
     organizer: "Сметюк Е."
+    organizerUrl: "https://vk.com/id23079204"
     resultsUrl: null
 
   - date: "2026-06-28"
     datePrecision: exact
     name: "Марафон «Крутоган»"
     organizer: "Омские веломарафоны"
+    organizerUrl: "https://xcm55.ru"
     resultsUrl: null
 
   - date:
@@ -93,12 +107,14 @@ races:
     datePrecision: range
     name: "Муниципальные соревнования города Омска памяти заслуженного тренера России В.А. Зражевского"
     organizer: "СДЮСШОР №8"
+    organizerUrl: "https://vk.com/veloschool8"
     resultsUrl: null
 
   - date: "2026-07-12"
     datePrecision: exact
     name: "3 этап: ХСО в Парке Победы"
     organizer: "Amateur Cycling League"
+    organizerUrl: "https://vk.com/kk_omsk"
     resultsUrl: null
 
   - date:
@@ -107,36 +123,42 @@ races:
     datePrecision: range
     name: "Strava Tour (Strava)"
     organizer: "Сметюк Е."
+    organizerUrl: "https://vk.com/id23079204"
     resultsUrl: null
 
   - date: "2026-07-27"
     datePrecision: exact
     name: "Чемпионат и первенство города Омска по велосипедному спорту маунтинбайк"
     organizer: "СДЮСШОР №8"
+    organizerUrl: "https://vk.com/veloschool8"
     resultsUrl: null
 
   - date: "2026-08-02"
     datePrecision: exact
     name: "4 этап: Онлайн веломарафон «Мяу🐱Марафон»"
     organizer: "Amateur Cycling League"
+    organizerUrl: "https://vk.com/kk_omsk"
     resultsUrl: null
 
   - date: "2026-08-09"
     datePrecision: exact
     name: "Муниципальные соревнования города Омска по велосипедному спорту-маунтинбайк «Березовая роща»"
     organizer: "СДЮСШОР №8"
+    organizerUrl: "https://vk.com/veloschool8"
     resultsUrl: null
 
   - date: "2026-08-15"
     datePrecision: exact
     name: "Omsk Gravel Classic (Strava)"
     organizer: "Сметюк Е."
+    organizerUrl: "https://vk.com/id23079204"
     resultsUrl: null
 
   - date: "2026-08-23"
     datePrecision: exact
     name: "5 этап: Кросс-кантри велогонка «Карьер»"
     organizer: "Amateur Cycling League"
+    organizerUrl: "https://vk.com/kk_omsk"
     resultsUrl: null
 
   - date:
@@ -145,6 +167,7 @@ races:
     datePrecision: range
     name: "II Всероссийская спартакиада между субъектами Российской Федерации по летним видам спорта среди сильнейших спортсменов 2026 года"
     organizer: "Академия велоспорта"
+    organizerUrl: "https://vk.com/akademiyavelosporta"
     resultsUrl: null
 
   - dateText: "Конец августа/начало сентября"
@@ -154,12 +177,14 @@ races:
     datePrecision: approx
     name: "Gravel’30"
     organizer: "Сметюк Е."
+    organizerUrl: "https://vk.com/id23079204"
     resultsUrl: null
 
   - date: "2026-09-13"
     datePrecision: exact
     name: "6 этап: Кросс-кантри велогонка «Финал сезона»"
     organizer: "Amateur Cycling League"
+    organizerUrl: "https://vk.com/kk_omsk"
     resultsUrl: null
 
   - dateText: "Сентябрь"
@@ -169,16 +194,19 @@ races:
     datePrecision: approx
     name: "Пивной Велокросс"
     organizer: "Сметюк Е."
+    organizerUrl: "https://vk.com/id23079204"
     resultsUrl: null
 
   - date: "2026-09-27"
     datePrecision: exact
     name: "Осенний веломарафон"
     organizer: "Омские веломарафоны"
+    organizerUrl: "https://xcm55.ru"
     resultsUrl: null
 
   - date: "2026-10-04"
     datePrecision: exact
     name: "Муниципальные соревнования города Омска по велосипедному спорту-маунтинбайк «Осенний старт»"
     organizer: "СДЮСШОР №8"
+    organizerUrl: "https://vk.com/veloschool8"
     resultsUrl: null

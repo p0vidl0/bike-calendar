@@ -92,6 +92,20 @@ function sortRacesByStartDate(a, b) {
   return a.start - b.start;
 }
 
+/** Название мероприятия как ссылка, если задан eventUrl. */
+function raceNameHtml(race) {
+  const name = escapeHtml(race.name);
+  if (!race.eventUrl) return name;
+  return `<a class="race-event-link" href="${escapeHtml(race.eventUrl)}" target="_blank" rel="noreferrer">${name}</a>`;
+}
+
+/** Имя организатора как ссылка, если задан organizerUrl. */
+function organizerHtml(race) {
+  const label = escapeHtml(race.organizer);
+  if (!race.organizerUrl) return label;
+  return `<a class="race-organizer-link" href="${escapeHtml(race.organizerUrl)}" target="_blank" rel="noreferrer">${label}</a>`;
+}
+
 function renderCalendar(races) {
   const now = new Date();
   const prepared = races
@@ -111,8 +125,8 @@ function renderCalendar(races) {
     .map((key) => {
       const cards = groups.get(key).map((race) => {
         const date = escapeHtml(formatRaceDate(race));
-        const name = escapeHtml(race.name);
-        const organizer = escapeHtml(race.organizer);
+        const name = raceNameHtml(race);
+        const organizer = organizerHtml(race);
         const statusClass = `status-${race.status.key}`;
         const statusLabel = escapeHtml(race.status.label);
         const statusBadge = `<span class="status ${statusClass} race-status-label${race.status.key === "upcoming" ? " hidden" : ""}" data-role="race-status">${statusLabel}</span>`;
@@ -155,8 +169,8 @@ function renderTable(races) {
 
   return prepared.map((race) => {
     const date = escapeHtml(formatRaceDate(race));
-    const name = escapeHtml(race.name);
-    const organizer = escapeHtml(race.organizer);
+    const name = raceNameHtml(race);
+    const organizer = organizerHtml(race);
     const resultsCell = race.resultsUrl
       ? `<a class="results-link" href="${escapeHtml(race.resultsUrl)}" target="_blank" rel="noreferrer">Открыть</a>`
       : "—";
