@@ -12,7 +12,7 @@ races:
     name: "Межрегиональные соревнования по велосипедному спорту (шоссе), XXXXIV юношеская многодневная гонка по велосипедному спорту, посвященная Дню Победы"
     organizer: "Академия велоспорта"
     organizerUrl: "https://vk.ru/omskakademiyavelosporta"
-    resultsUrl: null
+    resultsUrl: "https://vk.ru/wall-46300753_20586?reply=20587"
 
   - date: "2026-05-16"
     datePrecision: exact
@@ -20,7 +20,7 @@ races:
     organizer: "Сметюк Е."
     organizerUrl: "https://vk.com/id23079204"
     eventUrl: "https://vk.com/wall-185909723_983"
-    resultsUrl: null
+    resultsUrl: "https://vk.com/wall-185909723_988"
 
   - date: "2026-05-17"
     datePrecision: exact
@@ -28,7 +28,7 @@ races:
     organizer: "Amateur Cycling League"
     organizerUrl: "https://vk.com/kk_omsk"
     eventUrl: "https://vk.com/wall-206728976_441"
-    resultsUrl: null
+    resultsUrl: "https://vk.com/wall-206728976_477"
 
   - date: "2026-05-24"
     datePrecision: exact
@@ -42,6 +42,7 @@ races:
     name: "Gravel’10"
     organizer: "Сметюк Е."
     organizerUrl: "https://vk.com/id23079204"
+    eventUrl: "https://vk.com/wall-185909723_990"
     resultsUrl: null
 
   - dateText: "Июнь-июль"
@@ -91,6 +92,7 @@ races:
     name: "2 этап: Кросс-кантри велогонка «Битва на озере»"
     organizer: "Amateur Cycling League"
     organizerUrl: "https://vk.com/kk_omsk"
+    eventUrl: "https://vk.com/wall-206728976_487"
     resultsUrl: null
 
   - date: "2026-06-27"
