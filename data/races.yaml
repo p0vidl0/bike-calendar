@@ -101,6 +101,7 @@ races:
     name: "Марафон «Крутоган»"
     organizer: "Омские веломарафоны"
     organizerUrl: "https://xcm55.ru"
+    eventUrl: "https://xcm55.ru/events/8/"
     resultsUrl: null
 
   - date:
