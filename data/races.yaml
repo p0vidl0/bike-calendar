@@ -35,15 +35,15 @@ races:
     name: "Чемпионат Омской области по велосипедному спорту (маунтинбайк)"
     organizer: "Академия велоспорта"
     organizerUrl: "https://vk.ru/omskakademiyavelosporta"
-    resultsUrl: null
+    resultsUrl: "https://vk.ru/wall-46300753_20704"
 
   - date: "2026-05-30"
     datePrecision: exact
     name: "Gravel’10"
     organizer: "Сметюк Е."
-    organizerUrl: "https://vk.com/id23079204"
-    eventUrl: "https://vk.com/wall-185909723_990"
-    resultsUrl: null
+    organizerUrl: "https://vk.ru/id23079204"
+    eventUrl: "https://vk.ru/wall-185909723_990"
+    resultsUrl: "https://vk.ru/wall-185909723_1014"
 
   - dateText: "Июнь-июль"
     date:
@@ -79,12 +79,6 @@ races:
     name: "Всероссийские соревнования по велосипедному спорту (шоссе)"
     organizer: "Академия велоспорта"
     organizerUrl: "https://vk.ru/omskakademiyavelosporta"
-    resultsUrl: null
-
-  - date: "2026-06-20"
-    datePrecision: exact
-    name: "МЕГА Критериум vol.1 (шоссе)"
-    organizer: "Pédalage.cc и Академия велоспорта"
     resultsUrl: null
 
   - date: "2026-06-21"
@@ -160,6 +154,12 @@ races:
     name: "Omsk Gravel Classic (Strava)"
     organizer: "Сметюк Е."
     organizerUrl: "https://vk.com/id23079204"
+    resultsUrl: null
+
+  - date: "2026-08-16"
+    datePrecision: exact
+    name: "МЕГА Критериум vol.1 (шоссе)"
+    organizer: "Pédalage.cc и Академия велоспорта"
     resultsUrl: null
 
   - date: "2026-08-23"
