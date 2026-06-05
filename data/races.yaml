@@ -45,11 +45,8 @@ races:
     eventUrl: "https://vk.ru/wall-185909723_990"
     resultsUrl: "https://vk.ru/wall-185909723_1014"
 
-  - dateText: "Июнь-июль"
-    date:
-      start: "2026-06-01"
-      end: "2026-07-31"
-    datePrecision: approx
+  - date: "2026-06-28"
+    datePrecision: exact
     name: "Первенство Омской области по велосипедному спорту (шоссе), 2 тур шоссе – критериум"
     organizer: "Академия велоспорта"
     organizerUrl: "https://vk.ru/omskakademiyavelosporta"
