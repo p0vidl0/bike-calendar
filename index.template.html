@@ -176,6 +176,41 @@
           row.dataset.status = s.key;
         }
 
+        function isVisible(el) {
+          if (!el || !el.getClientRects) return false;
+          return el.getClientRects().length > 0;
+        }
+
+        function pickFirstTarget(root, itemSelector) {
+          // Приоритет: текущие -> ближайшие будущие -> (fallback) первое не-прошедшее (если есть)
+          const current = root.querySelector(`${itemSelector}[data-status="current"]`);
+          if (current) return current;
+          const notPast = root.querySelectorAll(`${itemSelector}[data-status]:not([data-status="past"])`);
+          if (notPast && notPast.length > 0) return notPast[0];
+
+          // Если всё прошла — просто показываем самую первую запись.
+          const firstAny = root.querySelector(itemSelector);
+          return firstAny || null;
+        }
+
+        function scrollToFirstRelevant() {
+          const calendarRoot = document.getElementById("calendar");
+          const tableBody = document.getElementById("tableBody");
+          const tableRoot = tableBody ? tableBody.closest(".table-wrap") : null;
+
+          // В режиме "auto" может быть видим либо календарь, либо таблица (в зависимости от ширины).
+          const useCalendar = isVisible(calendarRoot);
+          const root = useCalendar ? calendarRoot : tableRoot;
+          if (!root) return;
+
+          const itemSelector = useCalendar ? ".race-card" : ".race-row";
+          const target = pickFirstTarget(root, itemSelector);
+          if (!target) return;
+
+          // Без smooth-скролла, чтобы не спорить с сохраненным поведением браузера.
+          target.scrollIntoView({ block: "start", behavior: "auto" });
+        }
+
         function refresh() {
           const now = new Date();
           document.querySelectorAll("#calendar .race-card").forEach((card) => {
@@ -187,6 +222,7 @@
         }
 
         refresh();
+        scrollToFirstRelevant();
         document.addEventListener("visibilitychange", () => {
           if (document.visibilityState === "visible") refresh();
         });
