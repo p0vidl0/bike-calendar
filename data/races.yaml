@@ -18,17 +18,17 @@ races:
     datePrecision: exact
     name: "Primavera (Strava)"
     organizer: "Сметюк Е."
-    organizerUrl: "https://vk.com/id23079204"
-    eventUrl: "https://vk.com/wall-185909723_983"
-    resultsUrl: "https://vk.com/wall-185909723_988"
+    organizerUrl: "https://vk.ru/id23079204"
+    eventUrl: "https://vk.ru/wall-185909723_983"
+    resultsUrl: "https://vk.ru/wall-185909723_988"
 
   - date: "2026-05-17"
     datePrecision: exact
     name: "1 этап: Кросс-кантри велогонка «Прудки»"
     organizer: "Amateur Cycling League"
-    organizerUrl: "https://vk.com/kk_omsk"
-    eventUrl: "https://vk.com/wall-206728976_441"
-    resultsUrl: "https://vk.com/wall-206728976_477"
+    organizerUrl: "https://vk.ru/kk_omsk"
+    eventUrl: "https://vk.ru/wall-206728976_441"
+    resultsUrl: "https://vk.ru/wall-206728976_477"
 
   - date: "2026-05-24"
     datePrecision: exact
@@ -59,15 +59,15 @@ races:
     datePrecision: approx
     name: "Муниципальные соревнования города Омска Мемориал заслуженного тренера СССР Л. И.Живодерова"
     organizer: "СДЮСШОР №8"
-    organizerUrl: "https://vk.com/veloschool8"
+    organizerUrl: "https://vk.ru/veloschool8"
     resultsUrl: null
 
   - date: "2026-06-06"
     datePrecision: exact
     name: "Red Rock Road Race (Strava)"
     organizer: "Сметюк Е."
-    organizerUrl: "https://vk.com/id23079204"
-    resultsUrl: "https://vk.com/wall-185909723_1029"
+    organizerUrl: "https://vk.ru/id23079204"
+    resultsUrl: "https://vk.ru/wall-185909723_1029"
 
   - date:
       start: "2026-06-15"
@@ -82,9 +82,9 @@ races:
     datePrecision: exact
     name: "2 этап: Кросс-кантри велогонка «Битва на озере»"
     organizer: "Amateur Cycling League"
-    organizerUrl: "https://vk.com/kk_omsk"
-    eventUrl: "https://vk.com/wall-206728976_487"
-    resultsUrl: "https://vk.com/wall-206728976_533"
+    organizerUrl: "https://vk.ru/kk_omsk"
+    eventUrl: "https://vk.ru/wall-206728976_487"
+    resultsUrl: "https://vk.ru/wall-206728976_533"
 
   - dateText: "Июль-август"
     date:
@@ -93,7 +93,7 @@ races:
     datePrecision: approx
     name: "Gravel’20"
     organizer: "Сметюк Е."
-    organizerUrl: "https://vk.com/id23079204"
+    organizerUrl: "https://vk.ru/id23079204"
     resultsUrl: null
 
   - date: "2026-06-27"
@@ -110,15 +110,15 @@ races:
     datePrecision: range
     name: "Муниципальные соревнования города Омска памяти заслуженного тренера России В.А. Зражевского"
     organizer: "СДЮСШОР №8"
-    organizerUrl: "https://vk.com/veloschool8"
+    organizerUrl: "https://vk.ru/veloschool8"
     resultsUrl: null
 
   - date: "2026-07-12"
     datePrecision: exact
     name: "3 этап: ХСО в Парке Победы"
     organizer: "Amateur Cycling League"
-    organizerUrl: "https://vk.com/kk_omsk"
-    resultsUrl: null
+    organizerUrl: "https://vk.ru/kk_omsk"
+    resultsUrl: https://vk.ru/wall-206728976_567
 
   - date:
       start: "2026-07-17"
@@ -126,36 +126,36 @@ races:
     datePrecision: range
     name: "Strava Tour (Strava)"
     organizer: "Сметюк Е."
-    organizerUrl: "https://vk.com/id23079204"
-    resultsUrl: null
-    eventUrl: "https://vk.com/wall-185909723_1034"
+    organizerUrl: "https://vk.ru/id23079204"
+    resultsUrl: https://vk.ru/wall-185909723_1083
+    eventUrl: "https://vk.ru/wall-185909723_1034"
 
   - date: "2026-07-27"
     datePrecision: exact
     name: "Чемпионат и первенство города Омска по велосипедному спорту маунтинбайк"
     organizer: "СДЮСШОР №8"
-    organizerUrl: "https://vk.com/veloschool8"
+    organizerUrl: "https://vk.ru/veloschool8"
     resultsUrl: null
 
   - date: "2026-08-02"
     datePrecision: exact
     name: "4 этап: Онлайн веломарафон «Мяу🐱Марафон»"
     organizer: "Amateur Cycling League"
-    organizerUrl: "https://vk.com/kk_omsk"
+    organizerUrl: "https://vk.ru/kk_omsk"
     resultsUrl: null
 
-  - date: "2026-07-26"
+  - date: "2026-08-16"
     datePrecision: exact
     name: "Муниципальные соревнования города Омска по велосипедному спорту-маунтинбайк «Березовая роща»"
     organizer: "СДЮСШОР №8"
-    organizerUrl: "https://vk.com/veloschool8"
+    organizerUrl: "https://vk.ru/veloschool8"
     resultsUrl: null
 
   - date: "2026-08-15"
     datePrecision: exact
     name: "Omsk Gravel Classic (Strava)"
     organizer: "Сметюк Е."
-    organizerUrl: "https://vk.com/id23079204"
+    organizerUrl: "https://vk.ru/id23079204"
     resultsUrl: null
 
   - date: "2026-08-16"
@@ -168,7 +168,14 @@ races:
     datePrecision: exact
     name: "5 этап: Кросс-кантри велогонка «Карьер»"
     organizer: "Amateur Cycling League"
-    organizerUrl: "https://vk.com/kk_omsk"
+    organizerUrl: "https://vk.ru/kk_omsk"
+    resultsUrl: null
+
+  - date: "2026-08-23"
+    datePrecision: exact
+    name: "Мемориал Иващенко А.П. по Велокроссу"
+    organizer: "МБОУ ДО Одесский ДООФСЦ, ДОЛ Солнечная Поляна"
+    organizerUrl: null
     resultsUrl: null
 
   - date:
@@ -187,14 +194,14 @@ races:
     datePrecision: approx
     name: "Gravel’30"
     organizer: "Сметюк Е."
-    organizerUrl: "https://vk.com/id23079204"
+    organizerUrl: "https://vk.ru/id23079204"
     resultsUrl: null
 
   - date: "2026-09-13"
     datePrecision: exact
     name: "6 этап: Кросс-кантри велогонка «Финал сезона»"
     organizer: "Amateur Cycling League"
-    organizerUrl: "https://vk.com/kk_omsk"
+    organizerUrl: "https://vk.ru/kk_omsk"
     resultsUrl: null
 
   - dateText: "Сентябрь"
@@ -204,19 +211,20 @@ races:
     datePrecision: approx
     name: "Пивной Велокросс"
     organizer: "Сметюк Е."
-    organizerUrl: "https://vk.com/id23079204"
+    organizerUrl: "https://vk.ru/id23079204"
     resultsUrl: null
 
-  - date: "2026-09-27"
+  - date: "2026-09-26"
     datePrecision: exact
     name: "Осенний веломарафон"
     organizer: "Омские веломарафоны"
     organizerUrl: "https://xcm55.ru"
+    eventUrl: "https://xcm55.ru/events/9/"
     resultsUrl: null
 
   - date: "2026-10-04"
     datePrecision: exact
     name: "Муниципальные соревнования города Омска по велосипедному спорту-маунтинбайк «Осенний старт»"
     organizer: "СДЮСШОР №8"
-    organizerUrl: "https://vk.com/veloschool8"
+    organizerUrl: "https://vk.ru/veloschool8"
     resultsUrl: null
