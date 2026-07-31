@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #16180f; }
+  a { color: inherit; text-decoration: none; }
+  [data-theme="dark"] a[href]:hover { color: oklch(0.85 0.19 118); }
+  [data-theme="light"] a[href]:hover { color: oklch(0.5 0.14 132); }
+  button, select { font: inherit; cursor: pointer; }
+</style>
+</helmet>
+
+<div data-theme="{{ themeName }}" style="min-height:100vh; font-family:'IBM Plex Sans',system-ui,sans-serif; background:{{ t.bg }}; color:{{ t.text }}">
+
+  <div style="position:sticky; top:0; z-index:20; display:flex; align-items:center; justify-content:space-between; gap:24px; padding:16px 40px; border-bottom:1px solid {{ t.line }}; background:{{ t.headerBg }}; backdrop-filter:blur(8px)">
+    <div style="display:flex; align-items:center; gap:12px">
+      <div style="width:10px; height:10px; border-radius:50%; background:{{ t.solidBg }}"></div>
+      <span style="font-family:'Oswald',sans-serif; font-size:19px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase">Omskvelo</span>
+      <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.08em; color:{{ t.dim }}">/ CALENDAR 2026</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:12px">
+      <div style="display:flex; gap:2px; padding:3px; border-radius:9px; background:{{ t.raised }}">
+        <sc-for list="{{ themeChips }}" as="c" hint-placeholder-count="3">
+          <button onClick="{{ c.on }}" style="padding:6px 12px; border-radius:7px; border:0; font-size:12.5px; background:{{ c.bg }}; color:{{ c.fg }}">{{ c.label }}</button>
+        </sc-for>
+      </div>
+      <a href="https://t.me/omskvelo_calendar_bot" style="font-size:13px; font-weight:500; padding:9px 16px; border-radius:999px; background:{{ t.solidBg }}; color:{{ t.solidFg }}">Телеграм-бот</a>
+    </div>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1.15fr 1fr; border-bottom:1px solid {{ t.line }}">
+    <div style="padding:48px 40px 44px; display:flex; flex-direction:column; gap:22px">
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:{{ t.accentText }}">Омск · сезон 2026 · {{ total }} стартов</div>
+      <h1 style="margin:0; font-family:'Oswald',sans-serif; font-size:62px; line-height:1.04; font-weight:600; letter-spacing:-0.01em; text-transform:uppercase; text-wrap:balance">Календарь<br>велосоревнований</h1>
+      <p style="margin:0; max-width:44ch; font-size:16px; line-height:1.55; color:{{ t.muted }}; text-wrap:pretty">Официальные старты, любительские гонки и марафоны Омской области — в одном месте.</p>
+
+      <div style="margin-top:6px; padding:22px 24px; border:1px solid {{ t.border }}; border-radius:14px; background:{{ t.panel }}; display:flex; flex-direction:column; gap:14px">
+        <div style="display:flex; align-items:center; gap:10px; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:{{ t.dim }}">
+          <span style="width:6px; height:6px; border-radius:50%; background:{{ t.solidBg }}"></span>Ближайший старт
+        </div>
+        <a href="{{ next.href }}" style="font-family:'Oswald',sans-serif; font-size:27px; line-height:1.2; font-weight:500; text-transform:uppercase">{{ next.title }}</a>
+        <div style="display:flex; align-items:center; gap:14px; font-size:14px; color:{{ t.muted }}">
+          <span>{{ next.dateLabel }}</span><span style="color:{{ t.faint }}">·</span><span>{{ next.org }}</span>
+        </div>
+        <div style="display:flex; gap:10px; margin-top:4px">
+          <sc-for list="{{ cdUnits }}" as="u" hint-placeholder-count="4">
+            <div style="flex:1; text-align:center; padding:12px 8px; border-radius:10px; background:{{ t.raised }}">
+              <div style="font-family:'Oswald',sans-serif; font-size:32px; font-weight:600; line-height:1; color:{{ t.accentText }}">{{ u.v }}</div>
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:{{ t.dim }}; margin-top:6px">{{ u.l }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:relative; display:flex; align-items:flex-end; justify-content:center; padding:24px; border-left:1px solid {{ t.line }}; background:repeating-linear-gradient(135deg, {{ t.stripeA }} 0 12px, {{ t.stripeB }} 12px 24px)">
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; color:{{ t.dim }}; background:{{ t.bg }}; padding:8px 14px; border-radius:6px">фото с гонки · 1200×900</div>
+    </div>
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px; padding:18px 40px; border-bottom:1px solid {{ t.line }}; background:{{ t.panelAlt }}">
+    <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:{{ t.dim }}; margin-right:6px">Месяц</span>
+    <sc-for list="{{ monthChips }}" as="c" hint-placeholder-count="7">
+      <button onClick="{{ c.on }}" style="padding:7px 14px; border-radius:999px; font-size:13px; border:1px solid {{ c.bd }}; background:{{ c.bg }}; color:{{ c.fg }}">{{ c.label }}</button>
+    </sc-for>
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; padding:16px 40px; border-bottom:1px solid {{ t.line }}">
+    <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px">
+      <sc-for list="{{ discChips }}" as="c" hint-placeholder-count="5">
+        <button onClick="{{ c.on }}" style="display:flex; align-items:center; gap:7px; padding:7px 13px; border-radius:8px; font-size:13px; border:1px solid {{ c.bd }}; background:{{ c.bg }}; color:{{ c.fg }}">
+          <span style="width:7px; height:7px; border-radius:2px; background:{{ c.dot }}"></span>{{ c.label }}
+        </button>
+      </sc-for>
+      <span style="width:1px; height:22px; margin:0 4px; background:{{ t.border }}"></span>
+      <sc-for list="{{ statusChips }}" as="c" hint-placeholder-count="4">
+        <button onClick="{{ c.on }}" style="padding:7px 13px; border-radius:8px; font-size:13px; border:1px solid {{ c.bd }}; background:{{ c.bg }}; color:{{ c.fg }}">{{ c.label }}</button>
+      </sc-for>
+      <span style="width:1px; height:22px; margin:0 4px; background:{{ t.border }}"></span>
+      <sc-for list="{{ kindChips }}" as="c" hint-placeholder-count="3">
+        <button onClick="{{ c.on }}" style="padding:7px 13px; border-radius:8px; font-size:13px; border:1px solid {{ c.bd }}; background:{{ c.bg }}; color:{{ c.fg }}">{{ c.label }}</button>
+      </sc-for>
+    </div>
+    <div style="display:flex; align-items:center; gap:10px">
+      <select onChange="{{ setOrg }}" style="font-size:13px; padding:8px 12px; border-radius:8px; border:1px solid {{ t.border }}; background:{{ t.panel }}; color:{{ t.text }}">
+        <sc-for list="{{ orgOptions }}" as="o" hint-placeholder-count="6"><option value="{{ o }}">{{ o }}</option></sc-for>
+      </select>
+      <div style="display:flex; gap:2px; padding:3px; border-radius:9px; background:{{ t.raised }}">
+        <sc-for list="{{ viewChips }}" as="c" hint-placeholder-count="3">
+          <button onClick="{{ c.on }}" style="padding:7px 14px; border-radius:7px; border:0; font-size:13px; background:{{ c.bg }}; color:{{ c.fg }}">{{ c.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding:8px 40px 48px">
+    <div style="display:flex; align-items:baseline; gap:10px; padding:18px 0 6px; font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:{{ t.dim }}">
+      <span>Найдено {{ count }}</span>
+    </div>
+
+    <sc-if value="{{ isCards }}" hint-placeholder-val="{{ true }}">
+      <sc-for list="{{ groups }}" as="g" hint-placeholder-count="3">
+        <div style="display:flex; flex-direction:column; gap:10px; padding-top:26px">
+          <div style="display:flex; align-items:center; gap:16px">
+            <h2 style="margin:0; font-family:'Oswald',sans-serif; font-size:26px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; line-height:1.2">{{ g.name }}</h2>
+            <div style="flex:1; height:1px; background:{{ t.border }}"></div>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:{{ t.dim }}">{{ g.count }}</span>
+          </div>
+          <sc-for list="{{ g.events }}" as="ev" hint-placeholder-count="5">
+            <div style="display:grid; grid-template-columns:108px 1fr auto; gap:24px; align-items:center; padding:18px 20px; border-radius:12px; border:1px solid {{ t.border }}; background:{{ t.panel }}" style-hover="background:{{ t.hover }}">
+              <div style="display:flex; flex-direction:column; gap:2px; padding-left:12px; border-left:3px solid {{ ev.dot }}">
+                <div style="font-family:'Oswald',sans-serif; font-size:26px; font-weight:600; line-height:1.1">{{ ev.dayBig }}</div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:{{ t.dim }}">{{ ev.daySub }}</div>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:7px; min-width:0">
+                <a href="{{ ev.href }}" style="font-size:17px; font-weight:600; line-height:1.35; text-wrap:pretty">{{ ev.title }}</a>
+                <div style="display:flex; flex-wrap:wrap; align-items:center; gap:10px; font-size:13px; color:{{ t.muted }}">
+                  <span style="padding:3px 9px; border-radius:5px; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; font-family:'IBM Plex Mono',monospace; background:{{ ev.dotSoft }}; color:{{ ev.dot }}">{{ ev.disc }}</span>
+                  <a href="{{ ev.orgHref }}">{{ ev.org }}</a>
+                  <span style="color:{{ t.faint }}">·</span>
+                  <span>{{ ev.kind }}</span>
+                </div>
+              </div>
+              <div style="display:flex; align-items:center; gap:12px">
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; padding:6px 11px; border-radius:999px; border:1px solid {{ ev.stBd }}; color:{{ ev.stFg }}; background:{{ ev.stBg }}">{{ ev.status }}</span>
+                <sc-if value="{{ ev.result }}" hint-placeholder-val="{{ true }}">
+                  <a href="{{ ev.result }}" style="font-size:13px; font-weight:500; padding:7px 14px; border-radius:999px; color:{{ t.accentText }}; border:1px solid {{ t.accentBd }}">Результаты</a>
+                </sc-if>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </sc-if>
+
+    <sc-if value="{{ isTable }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:18px; border-radius:12px; overflow:hidden; border:1px solid {{ t.border }}">
+        <div style="display:grid; grid-template-columns:190px 1fr 220px 130px; gap:20px; padding:13px 20px; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; background:{{ t.panelAlt }}; color:{{ t.dim }}">
+          <span>Дата</span><span>Мероприятие</span><span>Организатор</span><span>Результаты</span>
+        </div>
+        <sc-for list="{{ rows }}" as="ev" hint-placeholder-count="10">
+          <div style="display:grid; grid-template-columns:190px 1fr 220px 130px; gap:20px; padding:15px 20px; align-items:baseline; border-top:1px solid {{ t.border }}; background:{{ t.panel }}" style-hover="background:{{ t.hover }}">
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:{{ t.muted }}">{{ ev.dateLabel }}</span>
+            <a href="{{ ev.href }}" style="font-size:14px; line-height:1.4">{{ ev.title }}</a>
+            <a href="{{ ev.orgHref }}" style="font-size:13px; color:{{ t.muted }}">{{ ev.org }}</a>
+            <a href="{{ ev.result }}" style="font-size:13px; color:{{ ev.resFg }}">{{ ev.resLabel }}</a>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isGrid }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:18px">
+        <h2 style="margin:0 0 14px; font-family:'Oswald',sans-serif; font-size:26px; font-weight:500; text-transform:uppercase; letter-spacing:0.04em; line-height:1.2">{{ gridMonth }}</h2>
+        <div style="display:grid; grid-template-columns:repeat(7,1fr); gap:6px">
+          <sc-for list="{{ weekdays }}" as="w" hint-placeholder-count="7">
+            <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; padding:4px 6px; color:{{ t.dim }}">{{ w }}</div>
+          </sc-for>
+          <sc-for list="{{ cells }}" as="c" hint-placeholder-count="35">
+            <div style="min-height:104px; border-radius:9px; padding:8px; display:flex; flex-direction:column; gap:5px; border:1px solid {{ c.bd }}; background:{{ c.bg }}">
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:{{ c.numFg }}">{{ c.day }}</div>
+              <sc-for list="{{ c.events }}" as="ev" hint-placeholder-count="0">
+                <a href="{{ ev.href }}" style="font-size:11px; line-height:1.3; padding:5px 6px; border-radius:5px; background:{{ ev.dotSoft }}; color:{{ ev.dot }}">{{ ev.short }}</a>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="display:flex; align-items:center; justify-content:space-between; gap:20px; padding:24px 40px; border-top:1px solid {{ t.line }}; background:{{ t.panelAlt }}; font-size:13px; color:{{ t.muted }}">
+    <span>Знаете о старте, которого нет в календаре? Напишите боту.</span>
+    <a href="https://t.me/omskvelo_calendar_bot" style="color:{{ t.accentText }}">@omskvelo_calendar_bot</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const MONTHS = ['Май','Июнь','Июль','Август','Сентябрь','Октябрь'];
+const MI = { 'Май':4,'Июнь':5,'Июль':6,'Август':7,'Сентябрь':8,'Октябрь':9 };
+const SHORT = { 'Май':'мая','Июнь':'июн','Июль':'июл','Август':'авг','Сентябрь':'сен','Октябрь':'окт' };
+
+const A_ORG = 'https://vk.ru/omskakademiyavelosporta', ACL = 'https://vk.ru/kk_omsk',
+      SM = 'https://vk.ru/id23079204', SH8 = 'https://vk.ru/veloschool8', XCM = 'https://xcm55.ru';
+
+const EVENTS = [
+  { m:'Май', d:'02 мая', s:'2026-05-02', t:'Первенство Омской области по велосипедному спорту (шоссе), 1 тур шоссе — критериум', o:'Академия велоспорта', st:'past', r:'https://t.me/akademiyavelosporta/4054', dis:'Шоссе', k:'Официальные' },
+  { m:'Май', d:'11 — 16 мая', s:'2026-05-11', e:'2026-05-16', t:'Межрегиональные соревнования по велоспорту (шоссе), XXXXIV юношеская многодневная гонка, посвящённая Дню Победы', o:'Академия велоспорта', ou:A_ORG, st:'past', r:'https://vk.ru/wall-46300753_20586?reply=20587', dis:'Шоссе', k:'Официальные' },
+  { m:'Май', d:'16 мая', s:'2026-05-16', t:'Primavera (Strava)', u:'https://vk.ru/wall-185909723_983', o:'Сметюк Е.', ou:SM, st:'past', r:'https://vk.ru/wall-185909723_988', dis:'Онлайн', k:'Любительские' },
+  { m:'Май', d:'17 мая', s:'2026-05-17', t:'1 этап: кросс-кантри велогонка «Прудки»', u:'https://vk.ru/wall-206728976_441', o:'Amateur Cycling League', ou:ACL, st:'past', r:'https://vk.ru/wall-206728976_477', dis:'МТБ', k:'Любительские' },
+  { m:'Май', d:'24 мая', s:'2026-05-24', t:'Чемпионат Омской области по велоспорту (маунтинбайк)', o:'Академия велоспорта', ou:A_ORG, st:'past', r:'https://vk.ru/wall-46300753_20704', dis:'МТБ', k:'Официальные' },
+  { m:'Май', d:'30 мая', s:'2026-05-30', t:'Gravel’10', u:'https://vk.ru/wall-185909723_990', o:'Сметюк Е.', ou:SM, st:'past', r:'https://vk.ru/wall-185909723_1014', dis:'Грэвел', k:'Любительские' },
+  { m:'Июнь', d:'Июнь — июль', t:'Муниципальные соревнования Омска. Мемориал заслуженного тренера СССР Л. И. Живодерова', o:'СДЮСШОР №8', ou:SH8, st:'tbd', dis:'Шоссе', k:'Официальные' },
+  { m:'Июнь', d:'06 июня', s:'2026-06-06', t:'Red Rock Road Race (Strava)', o:'Сметюк Е.', ou:SM, st:'past', r:'https://vk.ru/wall-185909723_1029', dis:'Онлайн', k:'Любительские' },
+  { m:'Июнь', d:'15 — 18 июня', s:'2026-06-15', e:'2026-06-18', t:'Всероссийские соревнования по велосипедному спорту (шоссе)', o:'Академия велоспорта', ou:A_ORG, st:'past', dis:'Шоссе', k:'Официальные' },
+  { m:'Июнь', d:'21 июня', s:'2026-06-21', t:'2 этап: кросс-кантри велогонка «Битва на озере»', u:'https://vk.ru/wall-206728976_487', o:'Amateur Cycling League', ou:ACL, st:'past', r:'https://vk.ru/wall-206728976_533', dis:'МТБ', k:'Любительские' },
+  { m:'Июнь', d:'27 июня', s:'2026-06-27', t:'Марафон «Крутоган»', u:'https://xcm55.ru/events/8/', o:'Омские веломарафоны', ou:XCM, st:'past', r:'https://xcm55.ru/events/8/results/', dis:'МТБ', k:'Любительские' },
+  { m:'Июнь', d:'28 июня', s:'2026-06-28', t:'Первенство Омской области по велоспорту (шоссе), 2 тур шоссе — критериум', o:'Академия велоспорта', ou:A_ORG, st:'past', r:'https://vk.ru/doc319894040_707680897', dis:'Шоссе', k:'Официальные' },
+  { m:'Июль', d:'Июль — август', t:'Gravel’20', o:'Сметюк Е.', ou:SM, st:'tbd', dis:'Грэвел', k:'Любительские' },
+  { m:'Июль', d:'11 — 12 июля', s:'2026-07-11', e:'2026-07-12', t:'Муниципальные соревнования Омска памяти заслуженного тренера России В. А. Зражевского', o:'СДЮСШОР №8', ou:SH8, st:'past', dis:'Шоссе', k:'Официальные' },
+  { m:'Июль', d:'12 июля', s:'2026-07-12', t:'3 этап: ХСО в Парке Победы', o:'Amateur Cycling League', ou:ACL, st:'past', r:'https://vk.ru/wall-206728976_567', dis:'МТБ', k:'Любительские' },
+  { m:'Июль', d:'17 — 25 июля', s:'2026-07-17', e:'2026-07-25', t:'Strava Tour (Strava)', u:'https://vk.ru/wall-185909723_1034', o:'Сметюк Е.', ou:SM, st:'past', r:'https://vk.ru/wall-185909723_1083', dis:'Онлайн', k:'Любительские' },
+  { m:'Июль', d:'27 июля', s:'2026-07-27', t:'Чемпионат и первенство Омска по велоспорту, маунтинбайк', o:'СДЮСШОР №8', ou:SH8, st:'past', dis:'МТБ', k:'Официальные' },
+  { m:'Август', d:'02 августа', s:'2026-08-02', t:'4 этап: онлайн-веломарафон «Мяу-Марафон»', o:'Amateur Cycling League', ou:ACL, st:'soon', dis:'Онлайн', k:'Любительские' },
+  { m:'Август', d:'15 августа', s:'2026-08-15', t:'Omsk Gravel Classic (Strava)', o:'Сметюк Е.', ou:SM, st:'soon', dis:'Грэвел', k:'Любительские' },
+  { m:'Август', d:'16 августа', s:'2026-08-16', t:'Муниципальные соревнования Омска по велоспорту-маунтинбайк «Березовая роща»', o:'СДЮСШОР №8', ou:SH8, st:'soon', dis:'МТБ', k:'Официальные' },
+  { m:'Август', d:'16 августа', s:'2026-08-16', t:'МЕГА Критериум vol. 1 (шоссе)', o:'Pédalage.cc и Академия велоспорта', st:'soon', dis:'Шоссе', k:'Любительские' },
+  { m:'Август', d:'23 августа', s:'2026-08-23', t:'5 этап: кросс-кантри велогонка «Карьер»', o:'Amateur Cycling League', ou:ACL, st:'soon', dis:'МТБ', k:'Любительские' },
+  { m:'Август', d:'23 августа', s:'2026-08-23', t:'Мемориал Иващенко А. П. по велокроссу', o:'Одесский ДООФСЦ', st:'soon', dis:'МТБ', k:'Официальные' },
+  { m:'Август', d:'24 — 30 августа', s:'2026-08-24', e:'2026-08-30', t:'II Всероссийская спартакиада между субъектами РФ по летним видам спорта среди сильнейших спортсменов 2026 года', o:'Академия велоспорта', ou:A_ORG, st:'soon', dis:'Шоссе', k:'Официальные' },
+  { m:'Август', d:'Конец августа / начало сентября', t:'Gravel’30', o:'Сметюк Е.', ou:SM, st:'tbd', dis:'Грэвел', k:'Любительские' },
+  { m:'Сентябрь', d:'Сентябрь', t:'Пивной велокросс', o:'Сметюк Е.', ou:SM, st:'tbd', dis:'МТБ', k:'Любительские' },
+  { m:'Сентябрь', d:'13 сентября', s:'2026-09-13', t:'6 этап: кросс-кантри велогонка «Финал сезона»', o:'Amateur Cycling League', ou:ACL, st:'soon', dis:'МТБ', k:'Любительские' },
+  { m:'Сентябрь', d:'26 сентября', s:'2026-09-26', t:'Осенний веломарафон', u:'https://xcm55.ru/events/9/', o:'Омские веломарафоны', ou:XCM, st:'soon', dis:'МТБ', k:'Любительские' },
+  { m:'Октябрь', d:'04 октября', s:'2026-10-04', t:'Муниципальные соревнования Омска по велоспорту-маунтинбайк «Осенний старт»', o:'СДЮСШОР №8', ou:SH8, st:'soon', dis:'МТБ', k:'Официальные' }
+];
+
+const ST_LABEL = { past:'Прошла', soon:'Скоро', tbd:'Дата уточняется' };
+
+const THEMES = {
+  dark: {
+    bg:'oklch(0.17 0.008 130)', headerBg:'oklch(0.17 0.008 130 / 0.92)',
+    panel:'oklch(0.205 0.01 130)', panelAlt:'oklch(0.19 0.01 130)', raised:'oklch(0.26 0.015 130)',
+    hover:'oklch(0.235 0.013 130)', line:'oklch(0.27 0.01 130)', border:'oklch(0.28 0.01 130)',
+    text:'oklch(0.96 0.004 130)', muted:'oklch(0.74 0.01 130)', dim:'oklch(0.62 0.01 130)', faint:'oklch(0.45 0.01 130)',
+    accentText:'oklch(0.85 0.19 118)', accentBd:'oklch(0.42 0.09 118)',
+    solidBg:'oklch(0.85 0.19 118)', solidFg:'oklch(0.2 0.03 130)',
+    stripeA:'oklch(0.24 0.012 130)', stripeB:'oklch(0.21 0.012 130)'
+  },
+  light: {
+    bg:'oklch(0.985 0.004 120)', headerBg:'oklch(0.985 0.004 120 / 0.92)',
+    panel:'oklch(1 0 0)', panelAlt:'oklch(0.96 0.006 120)', raised:'oklch(0.945 0.008 120)',
+    hover:'oklch(0.965 0.012 120)', line:'oklch(0.9 0.006 120)', border:'oklch(0.9 0.006 120)',
+    text:'oklch(0.24 0.012 130)', muted:'oklch(0.45 0.012 130)', dim:'oklch(0.55 0.01 130)', faint:'oklch(0.72 0.008 130)',
+    accentText:'oklch(0.5 0.14 132)', accentBd:'oklch(0.82 0.09 125)',
+    solidBg:'oklch(0.85 0.19 118)', solidFg:'oklch(0.24 0.04 130)',
+    stripeA:'oklch(0.93 0.02 120)', stripeB:'oklch(0.96 0.01 120)'
+  }
+};
+
+class Component extends DCLogic {
+  state = {
+    theme: 'auto', sysDark: true,
+    view:'Карточки', month:'Все', dis:'Все', st:'Все', kind:'Все', org:'Все',
+    now: Date.now()
+  };
+
+  componentDidMount() {
+    this.timer = setInterval(() => this.setState({ now: Date.now() }), 1000);
+    this.mq = window.matchMedia('(prefers-color-scheme: dark)');
+    this.onMq = () => this.setState({ sysDark: this.mq.matches });
+    this.mq.addEventListener('change', this.onMq);
+    this.setState({ sysDark: this.mq.matches });
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    if (this.mq) this.mq.removeEventListener('change', this.onMq);
+  }
+
+  isDark() {
+    const th = this.state.theme;
+    return th === 'auto' ? this.state.sysDark : th === 'dark';
+  }
+  set(key, val) { this.setState({ [key]: val }); }
+
+  discColor(dis, dark) {
+    const map = {
+      'Шоссе':  dark ? 'oklch(0.85 0.19 118)' : 'oklch(0.48 0.13 135)',
+      'МТБ':    dark ? 'oklch(0.8 0.15 62)'   : 'oklch(0.5 0.13 55)',
+      'Грэвел': dark ? 'oklch(0.78 0.14 32)'  : 'oklch(0.52 0.14 30)',
+      'Онлайн': dark ? 'oklch(0.78 0.1 250)'  : 'oklch(0.5 0.12 255)'
+    };
+    return map[dis] || (dark ? 'oklch(0.7 0.01 130)' : 'oklch(0.5 0.01 130)');
+  }
+  discSoft(dis, dark) {
+    const map = {
+      'Шоссе':  dark ? 'oklch(0.3 0.06 118)' : 'oklch(0.94 0.04 135)',
+      'МТБ':    dark ? 'oklch(0.3 0.05 62)'  : 'oklch(0.95 0.04 55)',
+      'Грэвел': dark ? 'oklch(0.3 0.05 32)'  : 'oklch(0.95 0.04 30)',
+      'Онлайн': dark ? 'oklch(0.3 0.04 250)' : 'oklch(0.95 0.03 255)'
+    };
+    return map[dis] || (dark ? 'oklch(0.28 0.01 130)' : 'oklch(0.94 0.006 130)');
+  }
+
+  decorate(ev, dark, T) {
+    const dayBig = ev.s ? String(Number(ev.s.slice(8, 10))) : '—';
+    const daySub = ev.s
+      ? (ev.e ? SHORT[ev.m] + ' · ' + (Number(ev.e.slice(8,10)) - Number(ev.s.slice(8,10)) + 1) + ' дн' : SHORT[ev.m])
+      : 'уточн.';
+    return {
+      m: ev.m, dateLabel: ev.d, title: ev.t, href: ev.u, org: ev.o, orgHref: ev.ou, kind: ev.k,
+      disc: ev.dis, status: ST_LABEL[ev.st], result: ev.r, dayBig, daySub,
+      short: ev.t.length > 40 ? ev.t.slice(0, 38) + '…' : ev.t,
+      dot: this.discColor(ev.dis, dark), dotSoft: this.discSoft(ev.dis, dark),
+      stFg: ev.st === 'soon' ? T.accentText : T.dim,
+      stBg: ev.st === 'soon' ? (dark ? 'oklch(0.28 0.06 118)' : 'oklch(0.95 0.05 125)') : 'transparent',
+      stBd: ev.st === 'soon' ? T.accentBd : T.border,
+      resLabel: ev.r ? 'Открыть' : '—',
+      resFg: ev.r ? T.accentText : T.faint,
+      _s: ev.s, _e: ev.e || ev.s
+    };
+  }
+
+  chips(key, values, dark, T, withDot) {
+    const cur = this.state[key];
+    return values.map(v => {
+      const on = v === cur;
+      return {
+        label: v, on: () => this.set(key, v),
+        bg: on ? T.solidBg : 'transparent',
+        fg: on ? T.solidFg : T.muted,
+        bd: on ? T.solidBg : T.border,
+        dot: withDot ? (on ? T.solidFg : this.discColor(v, dark)) : 'transparent'
+      };
+    });
+  }
+
+  cells(monthName, list, T) {
+    const mi = MI[monthName];
+    const offset = (new Date(2026, mi, 1).getDay() + 6) % 7;
+    const days = new Date(2026, mi + 1, 0).getDate();
+    const out = [];
+    for (let i = 0; i < offset; i++) out.push({ day:'', events:[], bg:'transparent', bd:'transparent', numFg:'transparent' });
+    for (let d = 1; d <= days; d++) {
+      const iso = '2026-' + String(mi + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+      const evs = list.filter(e => e._s && e._s <= iso && e._e >= iso);
+      out.push({
+        day: String(d), events: evs,
+        bg: evs.length ? T.panel : T.panelAlt,
+        bd: T.border,
+        numFg: evs.length ? T.text : T.faint
+      });
+    }
+    return out;
+  }
+
+  countdown(nextStart) {
+    if (!nextStart) return [{ v:'0', l:'дней' }, { v:'00', l:'часов' }, { v:'00', l:'минут' }, { v:'00', l:'секунд' }];
+    let ms = nextStart - this.state.now;
+    const d = Math.floor(ms / 86400000); ms -= d * 86400000;
+    const h = Math.floor(ms / 3600000); ms -= h * 3600000;
+    const m = Math.floor(ms / 60000); ms -= m * 60000;
+    const s = Math.floor(ms / 1000);
+    const p = n => String(n).padStart(2, '0');
+    return [{ v:String(d), l:'дней' }, { v:p(h), l:'часов' }, { v:p(m), l:'минут' }, { v:p(s), l:'секунд' }];
+  }
+
+  renderVals() {
+    const dark = this.isDark();
+    const T = THEMES[dark ? 'dark' : 'light'];
+    const s = this.state;
+    const list = EVENTS.filter(ev =>
+      (s.month === 'Все' || ev.m === s.month) &&
+      (s.dis === 'Все' || ev.dis === s.dis) &&
+      (s.st === 'Все' || ST_LABEL[ev.st] === s.st) &&
+      (s.kind === 'Все' || ev.k === s.kind) &&
+      (s.org === 'Все' || ev.o === s.org)
+    ).map(ev => this.decorate(ev, dark, T));
+
+    const groups = MONTHS.map(m => ({
+      name: m, count: list.filter(e => e.m === m).length + ' стартов', events: list.filter(e => e.m === m)
+    })).filter(g => g.events.length);
+
+    const gridMonth = s.month === 'Все' ? 'Август' : s.month;
+    const nextRaw = EVENTS.filter(e => e.s && new Date(e.s + 'T10:00:00+06:00').getTime() > s.now)
+      .sort((x, y) => x.s.localeCompare(y.s))[0];
+    const nextEv = nextRaw || EVENTS[EVENTS.length - 1];
+
+    const themeVals = [['auto','Авто'], ['dark','Тёмная'], ['light','Светлая']];
+    return {
+      t: T, themeName: dark ? 'dark' : 'light', total: EVENTS.length,
+      weekdays: ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'],
+      orgOptions: ['Все организаторы'].concat(Array.from(new Set(EVENTS.map(e => e.o)))),
+      cdUnits: this.countdown(nextRaw ? new Date(nextRaw.s + 'T10:00:00+06:00').getTime() : null),
+      next: { title: nextEv.t, dateLabel: nextEv.d, org: nextEv.o, href: nextEv.u },
+      groups, rows: list, count: list.length + ' стартов',
+      gridMonth, cells: this.cells(gridMonth, list, T),
+      isCards: s.view === 'Карточки', isTable: s.view === 'Таблица', isGrid: s.view === 'Сетка',
+      themeChips: themeVals.map(([v, label]) => ({
+        label, on: () => this.set('theme', v),
+        bg: s.theme === v ? T.solidBg : 'transparent',
+        fg: s.theme === v ? T.solidFg : T.muted
+      })),
+      monthChips: this.chips('month', ['Все'].concat(MONTHS), dark, T, false),
+      discChips: this.chips('dis', ['Все','Шоссе','МТБ','Грэвел','Онлайн'], dark, T, true),
+      statusChips: this.chips('st', ['Все','Скоро','Прошла','Дата уточняется'], dark, T, false),
+      kindChips: this.chips('kind', ['Все','Официальные','Любительские'], dark, T, false),
+      viewChips: this.chips('view', ['Карточки','Таблица','Сетка'], dark, T, false),
+      setOrg: e => this.set('org', e.target.value === 'Все организаторы' ? 'Все' : e.target.value)
+    };
+  }
+}
+</script>
+</body>
+</html>

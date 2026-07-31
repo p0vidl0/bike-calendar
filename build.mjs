@@ -6,14 +6,26 @@ import yaml from "js-yaml";
 const ROOT = process.cwd();
 const DIST_DIR = path.join(ROOT, "dist");
 const ASSETS_DIR = path.join(ROOT, "assets");
+
+const VALID_TYPES = new Set(["road", "mtb", "gravel"]);
+const VALID_LEVELS = new Set(["official", "amateur"]);
+const VALID_MODES = new Set(["online", "offline"]);
+const VALID_PRECISIONS = new Set(["exact", "range", "approx"]);
+const DEFAULT_START_TIME = "10:00";
+const TIMEZONE_OFFSET = "+06:00";
+const DEFAULT_IMAGES = {
+  mtb: "./assets/races/mtb.jpg",
+};
+
 const MONTHS_RU = [
   "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
-  "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
+  "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь",
 ];
+
+const SEASON_MONTHS = ["Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь"];
 
 const dateFormatter = new Intl.DateTimeFormat("ru-RU", { day: "2-digit", month: "long" });
 
-/** Короткий хэш для ?v= в URL стилей (сброс кэша браузера после изменения CSS). */
 function stylesCacheKey(css) {
   return createHash("sha256").update(css).digest("hex").slice(0, 12);
 }
@@ -31,13 +43,41 @@ function toDate(value) {
   return value ? new Date(`${value}T00:00:00`) : null;
 }
 
-/** Локальная календарная дата для data-атрибутов (клиентский пересчёт статуса). */
 function isoLocalDate(d) {
   if (!d) return "";
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, "0");
   const day = String(d.getDate()).padStart(2, "0");
   return `${y}-${m}-${day}`;
+}
+
+function monthNameFromDate(d) {
+  if (!d) return null;
+  return MONTHS_RU[d.getMonth()];
+}
+
+function parseStartTime(value, index) {
+  if (value == null || value === "") return null;
+  if (typeof value !== "string" || !/^\d{2}:\d{2}$/.test(value)) {
+    throw new Error(`Запись #${index + 1}: startTime должно быть в формате HH:MM`);
+  }
+  const [hours, minutes] = value.split(":").map(Number);
+  if (hours > 23 || minutes > 59) {
+    throw new Error(`Запись #${index + 1}: некорректное startTime`);
+  }
+  return value;
+}
+
+function resolveImagePath(value, index) {
+  if (value == null || value === "") return null;
+  if (typeof value !== "string") {
+    throw new Error(`Запись #${index + 1}: image должно быть строкой`);
+  }
+  if (value.includes("..") || value.startsWith("/") || /^https?:\/\//i.test(value)) {
+    throw new Error(`Запись #${index + 1}: image должно быть относительным путём внутри assets/`);
+  }
+  const normalized = value.replace(/^\.?\/?assets\//, "");
+  return `./assets/${normalized}`;
 }
 
 function normalizeRace(raw, index) {
@@ -49,25 +89,52 @@ function normalizeRace(raw, index) {
     throw new Error(`Запись #${index + 1}: обязательны поля name и organizer`);
   }
 
+  if (!VALID_TYPES.has(raw.type)) {
+    throw new Error(`Запись #${index + 1}: type должен быть road, mtb или gravel`);
+  }
+
+  if (!VALID_LEVELS.has(raw.level)) {
+    throw new Error(`Запись #${index + 1}: level должен быть official или amateur`);
+  }
+
+  if (!VALID_MODES.has(raw.mode)) {
+    throw new Error(`Запись #${index + 1}: mode должен быть online или offline`);
+  }
+
   const datePrecision = raw.datePrecision || "exact";
+  if (!VALID_PRECISIONS.has(datePrecision)) {
+    throw new Error(`Запись #${index + 1}: неизвестный datePrecision`);
+  }
+
   const start = toDate(raw.date?.start || raw.date);
   const end = toDate(raw.date?.end || raw.date);
-
-  return { ...raw, datePrecision, start, end };
-}
-
-function getStatus(race, now) {
-  if (race.datePrecision === "approx") {
-    return { key: "approx", label: "Дата уточняется" };
-  }
-  if (!race.start || !race.end) {
-    return { key: "approx", label: "Дата уточняется" };
+  const startTime = parseStartTime(raw.startTime, index);
+  let image = resolveImagePath(raw.image, index);
+  if (!image && raw.type === "mtb") {
+    image = DEFAULT_IMAGES.mtb;
   }
 
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  if (race.end < today) return { key: "past", label: "Прошла" };
-  if (race.start <= today && race.end >= today) return { key: "current", label: "Сегодня" };
-  return { key: "upcoming", label: "Скоро" };
+  if (startTime && datePrecision !== "exact") {
+    throw new Error(`Запись #${index + 1}: startTime допустимо только для exact`);
+  }
+
+  return {
+    name: raw.name,
+    organizer: raw.organizer,
+    organizerUrl: raw.organizerUrl || null,
+    eventUrl: raw.eventUrl || null,
+    resultsUrl: raw.resultsUrl || null,
+    type: raw.type,
+    level: raw.level,
+    mode: raw.mode,
+    datePrecision,
+    start: isoLocalDate(start),
+    end: isoLocalDate(end || start),
+    dateText: raw.dateText || null,
+    startTime,
+    image,
+    month: monthNameFromDate(start),
+  };
 }
 
 function formatRaceDate(race) {
@@ -77,123 +144,46 @@ function formatRaceDate(race) {
   if (!race.start) {
     return race.dateText || "Дата не указана";
   }
-  if (race.end && race.start.getTime() !== race.end.getTime()) {
-    return `${dateFormatter.format(race.start)} - ${dateFormatter.format(race.end)}`;
+
+  const start = toDate(race.start);
+  const end = toDate(race.end);
+
+  let label;
+  if (end && race.start !== race.end) {
+    label = `${dateFormatter.format(start)} — ${dateFormatter.format(end)}`;
+  } else {
+    label = dateFormatter.format(start);
   }
-  return dateFormatter.format(race.start);
-}
 
-function monthKey(race) {
-  return race.start ? race.start.getMonth() : 12;
-}
+  if (race.startTime && race.datePrecision === "exact") {
+    label = `${label}, ${race.startTime}`;
+  }
 
-function monthTitle(key) {
-  return key === 12 ? "С неопределенной датой" : MONTHS_RU[key];
+  return label;
 }
 
 function sortRacesByStartDate(a, b) {
   if (!a.start && !b.start) return 0;
   if (!a.start) return 1;
   if (!b.start) return -1;
-  return a.start - b.start;
+  return a.start.localeCompare(b.start);
 }
 
-/** Название мероприятия как ссылка, если задан eventUrl. */
-function raceNameHtml(race) {
-  const name = escapeHtml(race.name);
-  if (!race.eventUrl) return name;
-  return `<a class="race-event-link" href="${escapeHtml(race.eventUrl)}" target="_blank" rel="noreferrer">${name}</a>`;
-}
-
-/** Имя организатора как ссылка, если задан organizerUrl. */
-function organizerHtml(race) {
-  const label = escapeHtml(race.organizer);
-  if (!race.organizerUrl) return label;
-  return `<a class="race-organizer-link" href="${escapeHtml(race.organizerUrl)}" target="_blank" rel="noreferrer">${label}</a>`;
-}
-
-function renderCalendar(races) {
-  const now = new Date();
-  const prepared = races
-    .map(normalizeRace)
-    .map((race) => ({ ...race, status: getStatus(race, now) }))
-    .sort(sortRacesByStartDate);
-
-  const groups = new Map();
-  for (const race of prepared) {
-    const key = monthKey(race);
-    if (!groups.has(key)) groups.set(key, []);
-    groups.get(key).push(race);
-  }
-
-  return [...groups.keys()]
-    .sort((a, b) => a - b)
-    .map((key) => {
-      const cards = groups.get(key).map((race) => {
-        const date = escapeHtml(formatRaceDate(race));
-        const name = raceNameHtml(race);
-        const organizer = organizerHtml(race);
-        const statusClass = `status-${race.status.key}`;
-        const statusLabel = escapeHtml(race.status.label);
-        const statusBadge = `<span class="status ${statusClass} race-status-label${race.status.key === "upcoming" ? " hidden" : ""}" data-role="race-status">${statusLabel}</span>`;
-        const dp = escapeHtml(race.datePrecision);
-        const ds = escapeHtml(isoLocalDate(race.start));
-        const de = escapeHtml(isoLocalDate(race.end));
-        const resultsLink = race.resultsUrl
-          ? `<a class="results-link" href="${escapeHtml(race.resultsUrl)}" target="_blank" rel="noreferrer">Результаты</a>`
-          : "";
-
-        return `
-          <article class="race-card" data-status="${escapeHtml(race.status.key)}" data-date-precision="${dp}" data-start="${ds}" data-end="${de}">
-            <div class="race-date">${date}</div>
-            <h3 class="race-name">${name}</h3>
-            <p class="race-organizer">Организатор: ${organizer}</p>
-            <div class="race-footer">
-              ${statusBadge}
-              ${resultsLink}
-            </div>
-          </article>
-        `;
-      }).join("");
-
-      return `
-        <section class="month-group">
-          <h2 class="month-title">${monthTitle(key)}</h2>
-          <div class="race-list">${cards}</div>
-        </section>
-      `;
+function prepareRaces(races) {
+  return races
+    .map((raw, index) => {
+      const race = normalizeRace(raw, index);
+      return {
+        ...race,
+        dateLabel: formatRaceDate(race),
+        countdownTime: race.startTime || DEFAULT_START_TIME,
+      };
     })
-    .join("");
+    .sort(sortRacesByStartDate);
 }
 
-function renderTable(races) {
-  const now = new Date();
-  const prepared = races
-    .map(normalizeRace)
-    .map((race) => ({ ...race, status: getStatus(race, now) }))
-    .sort(sortRacesByStartDate);
-
-  return prepared.map((race) => {
-    const date = escapeHtml(formatRaceDate(race));
-    const name = raceNameHtml(race);
-    const organizer = organizerHtml(race);
-    const resultsCell = race.resultsUrl
-      ? `<a class="results-link" href="${escapeHtml(race.resultsUrl)}" target="_blank" rel="noreferrer">Открыть</a>`
-      : "—";
-
-    const dp = escapeHtml(race.datePrecision);
-    const ds = escapeHtml(isoLocalDate(race.start));
-    const de = escapeHtml(isoLocalDate(race.end));
-
-    return `
-      <tr class="race-row" data-status="${escapeHtml(race.status.key)}" data-date-precision="${dp}" data-start="${ds}" data-end="${de}">
-        <td>${date}</td>
-        <td>${name}</td>
-        <td>${organizer}</td>
-        <td>${resultsCell}</td>
-      </tr>
-    `;
-  }).join("");
+function serializeRacesJson(races) {
+  return JSON.stringify(races).replace(/</g, "\\u003c");
 }
 
 async function main() {
@@ -208,12 +198,17 @@ async function main() {
     throw new Error("Формат data/races.yaml неверный: ожидается массив races");
   }
 
+  const races = prepareRaces(parsed.races);
   const stylesUrl = `./styles.css?v=${stylesCacheKey(stylesText)}`;
+  const racesJson = serializeRacesJson(races);
 
   const pageHtml = pageTemplateText
     .replace("{{STYLES_URL}}", stylesUrl)
-    .replace("{{CALENDAR_CONTENT}}", renderCalendar(parsed.races))
-    .replace("{{TABLE_CONTENT}}", renderTable(parsed.races));
+    .replace("{{RACES_JSON}}", racesJson)
+    .replace("{{RACE_COUNT}}", String(races.length))
+    .replace("{{TIMEZONE_OFFSET}}", TIMEZONE_OFFSET)
+    .replace("{{DEFAULT_START_TIME}}", DEFAULT_START_TIME)
+    .replace("{{SEASON_MONTHS_JSON}}", JSON.stringify(SEASON_MONTHS));
 
   const tableRedirectHtml = `<!doctype html>
 <html lang="ru">
@@ -237,7 +232,7 @@ async function main() {
     fs.writeFile(path.join(DIST_DIR, "styles.css"), stylesText, "utf8"),
   ]);
 
-  console.log("Сборка завершена: dist/index.html (dist/table.html — редирект на index.html)");
+  console.log(`Сборка завершена: dist/index.html (${races.length} стартов)`);
 }
 
 main().catch((error) => {

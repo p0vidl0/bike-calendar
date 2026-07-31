@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "node build.mjs",
-    "dev": "npm run build && parcel serve dist/index.html --dist-dir .parcel-dev --open /index.html"
+    "dev": "node build.mjs && node dev-server.mjs"
   },
   "dependencies": {
     "js-yaml": "^4.1.0"

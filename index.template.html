@@ -1,230 +1,740 @@
 <!doctype html>
-<html lang="ru" data-calendar-view="auto">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Календарь велосоревнований 2026</title>
+    <title>Календарь велосоревнований 2026 — Омсквело</title>
     <link rel="icon" href="./assets/image.png" type="image/png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="{{STYLES_URL}}" />
   </head>
   <body>
-    <div class="theme-menu" id="themeMenu">
-      <div class="theme-menu-actions">
-        <a
-          class="theme-button"
-          href="https://t.me/omskvelo_calendar_bot"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Telegram-бот календаря"
-        ><span class="theme-button-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg></span></a>
-        <button class="theme-button" id="themeButton" aria-label="Настройки отображения" aria-haspopup="true" aria-expanded="false"><span class="theme-button-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /><circle cx="12" cy="12" r="3" /></svg></span></button>
-      </div>
-      <div class="theme-popover hidden" id="themePopover" role="region" aria-label="Настройки">
-        <div class="settings-group" role="group" aria-label="Тема">
-          <p class="settings-section-label">Тема</p>
-          <button class="theme-option" type="button" data-theme-mode="auto">Авто</button>
-          <button class="theme-option" type="button" data-theme-mode="dark">Темная</button>
-          <button class="theme-option" type="button" data-theme-mode="light">Светлая</button>
+    <div class="app" id="app">
+      <header class="site-header">
+        <div class="site-brand">
+          <span class="site-brand-dot" aria-hidden="true"></span>
+          <span class="site-brand-name">Омсквело</span>
+          <span class="site-brand-meta">/ <span class="site-brand-meta-full">КАЛЕНДАРЬ 2026</span><span class="site-brand-meta-short">2026</span></span>
         </div>
-        <div class="settings-group" role="group" aria-label="Вид календаря">
-          <p class="settings-section-label">Вид календаря</p>
-          <button class="calendar-view-option" type="button" data-calendar-view="auto">Авто</button>
-          <button class="calendar-view-option" type="button" data-calendar-view="cards">Карточки</button>
-          <button class="calendar-view-option" type="button" data-calendar-view="table">Таблица</button>
-        </div>
-      </div>
-    </div>
-    <main class="page">
-      <header class="hero">
-        <div>
-          <p class="eyebrow">Омск · 2026</p>
-          <h1>Календарь велосоревнований</h1>
-          <p class="subtitle">Официальные старты, любительские гонки и марафоны в одном месте.</p>
+        <div class="site-header-actions">
+          <div class="chip-group" role="group" aria-label="Тема" id="themeChips"></div>
+          <a class="btn-pill btn-pill-solid site-header-telegram" href="https://t.me/omskvelo_calendar_bot" target="_blank" rel="noopener noreferrer">Телеграм-бот</a>
         </div>
       </header>
 
-      <section id="calendar" class="calendar">
-        {{CALENDAR_CONTENT}}
+      <section class="hero">
+        <div class="hero-main">
+          <p class="hero-eyebrow">Омск · сезон 2026 · <span id="heroRaceCount">{{RACE_COUNT}} стартов</span></p>
+          <h1 class="hero-title">Календарь<br />велосоревнований</h1>
+          <p class="hero-subtitle">Официальные старты, любительские гонки и марафоны Омской области — в одном месте.</p>
+
+          <div class="next-race" id="nextRace">
+            <div class="next-race-label">
+              <span class="next-race-dot" aria-hidden="true"></span>
+              Ближайший старт
+            </div>
+            <a class="next-race-title" id="nextRaceTitle" href="#">—</a>
+            <div class="next-race-meta" id="nextRaceMeta">—</div>
+            <div class="countdown" id="countdown"></div>
+          </div>
+        </div>
+
+        <div class="hero-media" id="heroMedia">
+          <div class="hero-media-placeholder" id="heroPlaceholder">фото с гонки · 1200×900</div>
+        </div>
       </section>
 
-      <section class="table-wrap" aria-label="Таблица стартов">
-        <table class="races-table">
-          <thead>
-            <tr>
-              <th>Дата</th>
-              <th>Мероприятие</th>
-              <th>Организатор</th>
-              <th>Результаты</th>
-            </tr>
-          </thead>
-          <tbody id="tableBody">
-            {{TABLE_CONTENT}}
-          </tbody>
-        </table>
-      </section>
-      <div id="emptyState" class="empty hidden">Нет событий для отображения.</div>
-    </main>
+      <div class="month-bar">
+        <span class="filter-label">Месяц</span>
+        <div class="chip-scroll" id="monthChips"></div>
+      </div>
 
+      <div class="filters-desktop" id="filtersDesktop">
+        <div class="filters-desktop-left">
+          <div class="chip-group chip-group-wrap" id="disciplineChips"></div>
+          <span class="filter-divider" aria-hidden="true"></span>
+          <div class="chip-group chip-group-wrap" id="modeChips"></div>
+          <span class="filter-divider" aria-hidden="true"></span>
+          <div class="chip-group chip-group-wrap" id="statusChips"></div>
+          <span class="filter-divider" aria-hidden="true"></span>
+          <div class="chip-group chip-group-wrap" id="levelChips"></div>
+        </div>
+        <div class="filters-desktop-right">
+          <label class="sr-only" for="orgSelectDesktop">Организатор</label>
+          <select class="org-select" id="orgSelectDesktop"></select>
+          <div class="chip-group" id="viewChipsDesktop"></div>
+        </div>
+      </div>
+
+      <div class="filters-mobile-bar">
+        <button class="filters-toggle" id="filtersToggle" type="button" aria-expanded="false">
+          Фильтры<span class="filters-badge" id="filtersBadge"></span>
+        </button>
+        <div class="chip-group" id="viewChipsMobile"></div>
+      </div>
+
+      <div class="filters-mobile-panel hidden" id="filtersMobilePanel">
+        <div class="filters-mobile-group">
+          <span class="filter-label">Дисциплина</span>
+          <div class="chip-group chip-group-wrap" id="disciplineChipsMobile"></div>
+        </div>
+        <div class="filters-mobile-group">
+          <span class="filter-label">Формат</span>
+          <div class="chip-group chip-group-wrap" id="modeChipsMobile"></div>
+        </div>
+        <div class="filters-mobile-group">
+          <span class="filter-label">Статус</span>
+          <div class="chip-group chip-group-wrap" id="statusChipsMobile"></div>
+        </div>
+        <div class="filters-mobile-group">
+          <span class="filter-label">Тип старта</span>
+          <div class="chip-group chip-group-wrap" id="levelChipsMobile"></div>
+        </div>
+        <div class="filters-mobile-group">
+          <span class="filter-label">Организатор</span>
+          <label class="sr-only" for="orgSelectMobile">Организатор</label>
+          <select class="org-select org-select-full" id="orgSelectMobile"></select>
+        </div>
+      </div>
+
+      <main class="content">
+        <p class="results-count" id="resultsCount">Найдено 0 стартов</p>
+        <div id="cardsView"></div>
+        <div id="tableView" class="hidden"></div>
+        <div id="gridView" class="hidden"></div>
+        <p id="emptyState" class="empty hidden">Нет стартов по выбранным фильтрам.</p>
+      </main>
+
+      <footer class="site-footer">
+        <span class="site-footer-text">Знаете о старте, которого нет в календаре? Напишите боту<span class="site-footer-text-extra"> — добавим</span>.</span>
+        <a class="btn-pill btn-pill-solid site-footer-cta" href="https://t.me/omskvelo_calendar_bot" target="_blank" rel="noopener noreferrer">@omskvelo_calendar_bot</a>
+        <a class="site-footer-link" href="https://t.me/omskvelo_calendar_bot" target="_blank" rel="noopener noreferrer">@omskvelo_calendar_bot</a>
+      </footer>
+    </div>
+
+    <script id="races-data" type="application/json">{{RACES_JSON}}</script>
     <script>
       (() => {
-        const THEME_KEY = "theme-mode";
-        const CALENDAR_VIEW_KEY = "calendar-view";
-        const themeButton = document.getElementById("themeButton");
-        const themePopover = document.getElementById("themePopover");
-        const themeOptions = Array.from(document.querySelectorAll(".theme-option"));
-        const calendarViewOptions = Array.from(document.querySelectorAll(".calendar-view-option"));
-        const themeMenu = document.getElementById("themeMenu");
+        const RACES = JSON.parse(document.getElementById("races-data").textContent);
+        const SEASON_MONTHS = {{SEASON_MONTHS_JSON}};
+        const TZ = "{{TIMEZONE_OFFSET}}";
+        const DEFAULT_START_TIME = "{{DEFAULT_START_TIME}}";
+        const MONTH_SHORT = { "Май": "мая", "Июнь": "июн", "Июль": "июл", "Август": "авг", "Сентябрь": "сен", "Октябрь": "окт" };
+        const MONTH_INDEX = { "Май": 4, "Июнь": 5, "Июль": 6, "Август": 7, "Сентябрь": 8, "Октябрь": 9 };
+        const TYPE_LABELS = { road: "Шоссе", mtb: "МТБ", gravel: "Грэвел" };
+        const MODE_LABELS = { online: "Онлайн", offline: "Оффлайн" };
+        const LEVEL_LABELS = { official: "Официальные", amateur: "Любительские" };
+        const STATUS_LABELS = { past: "Прошла", soon: "Скоро", tbd: "Дата уточняется" };
+        const THEME_KEY = "omskvelo-theme";
+        const VIEW_KEY = "omskvelo-view";
+        const DESKTOP_VIEWS = ["cards", "table", "grid"];
+        const MOBILE_VIEWS = ["cards", "grid"];
+        const DESKTOP_VIEW_LABELS = { cards: "Карточки", table: "Таблица", grid: "Сетка" };
+        const MOBILE_VIEW_LABELS = { cards: "Список", grid: "Сетка" };
 
-        function applyTheme(mode) {
-          if (mode === "auto") {
-            document.documentElement.removeAttribute("data-theme");
+        const state = {
+          theme: localStorage.getItem(THEME_KEY) || "auto",
+          view: localStorage.getItem(VIEW_KEY) || "cards",
+          month: "Все",
+          discipline: "Все",
+          mode: "Все",
+          status: "Скоро",
+          level: "Все",
+          org: "Все",
+          showFilters: false,
+          now: Date.now(),
+        };
+
+        const app = document.getElementById("app");
+        const mqMobile = window.matchMedia("(max-width: 739px)");
+
+        function isDarkTheme() {
+          if (state.theme === "dark") return true;
+          if (state.theme === "light") return false;
+          return window.matchMedia("(prefers-color-scheme: dark)").matches;
+        }
+
+        function applyThemeAttr() {
+          app.dataset.theme = isDarkTheme() ? "dark" : "light";
+          if (state.theme === "auto") {
+            document.documentElement.removeAttribute("data-theme-mode");
           } else {
-            document.documentElement.setAttribute("data-theme", mode);
+            document.documentElement.setAttribute("data-theme-mode", state.theme);
           }
-          themeOptions.forEach((button) => {
-            button.classList.toggle("is-active", button.dataset.themeMode === mode);
+        }
+
+        function pluralRu(n, one, few, many) {
+          const abs = Math.abs(Number(n));
+          const mod10 = abs % 10;
+          const mod100 = abs % 100;
+          if (mod10 === 1 && mod100 !== 11) return one;
+          if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return few;
+          return many;
+        }
+
+        function pluralStarts(n) {
+          return pluralRu(n, "старт", "старта", "стартов");
+        }
+
+        function escapeHtml(value) {
+          return String(value)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#39;");
+        }
+
+        function linkOrText(url, text, className) {
+          const safe = escapeHtml(text);
+          if (!url) {
+            return className ? `<span class="${className}">${safe}</span>` : safe;
+          }
+          return `<a class="${className || ""}" href="${escapeHtml(url)}" target="_blank" rel="noreferrer">${safe}</a>`;
+        }
+
+        function typeKey(race) {
+          return race.type;
+        }
+
+        function typeLabel(race) {
+          return TYPE_LABELS[race.type];
+        }
+
+        function modeBadge(race) {
+          if (race.mode !== "online") return "";
+          return `<span class="mode-badge mode-online">${escapeHtml(MODE_LABELS.online)}</span>`;
+        }
+
+        function raceStartMs(race) {
+          if (!race.start || race.datePrecision === "approx") return null;
+          const time = race.countdownTime || DEFAULT_START_TIME;
+          return new Date(`${race.start}T${time}:00${TZ}`).getTime();
+        }
+
+        function raceEndMs(race) {
+          if (!race.end || race.datePrecision === "approx") return null;
+          return new Date(`${race.end}T23:59:59${TZ}`).getTime();
+        }
+
+        function raceStatus(race, now = state.now) {
+          if (race.datePrecision === "approx") return "tbd";
+          const startMs = raceStartMs(race);
+          const endMs = raceEndMs(race);
+          if (startMs == null || endMs == null) return "tbd";
+          if (endMs < now) return "past";
+          return "soon";
+        }
+
+        function dayBig(race) {
+          if (!race.start) return "—";
+          return String(Number(race.start.slice(8, 10)));
+        }
+
+        function daySub(race) {
+          if (!race.start) return "уточн.";
+          if (race.start !== race.end && race.end) {
+            const days = Number(race.end.slice(8, 10)) - Number(race.start.slice(8, 10)) + 1;
+            return `${MONTH_SHORT[race.month] || race.month} · ${days} дн`;
+          }
+          return MONTH_SHORT[race.month] || race.month || "—";
+        }
+
+        function shortTitle(title) {
+          return title.length > 40 ? `${title.slice(0, 38)}…` : title;
+        }
+
+        function matchesDiscipline(race, filter) {
+          if (filter === "Все") return true;
+          if (filter === "Шоссе") return race.type === "road";
+          if (filter === "МТБ") return race.type === "mtb";
+          if (filter === "Грэвел") return race.type === "gravel";
+          return true;
+        }
+
+        function matchesMode(race, filter) {
+          if (filter === "Все") return true;
+          return MODE_LABELS[race.mode] === filter;
+        }
+
+        function filteredRaces() {
+          return RACES.filter((race) => {
+            if (state.month !== "Все" && race.month !== state.month) return false;
+            if (!matchesDiscipline(race, state.discipline)) return false;
+            if (!matchesMode(race, state.mode)) return false;
+            if (state.status !== "Все" && STATUS_LABELS[raceStatus(race)] !== state.status) return false;
+            if (state.level !== "Все" && LEVEL_LABELS[race.level] !== state.level) return false;
+            if (state.org !== "Все" && race.organizer !== state.org) return false;
+            return true;
           });
         }
 
-        function applyCalendarView(mode) {
-          document.documentElement.setAttribute("data-calendar-view", mode);
-          calendarViewOptions.forEach((button) => {
-            button.classList.toggle("is-active", button.dataset.calendarView === mode);
+        function activeFilterCount() {
+          return ["discipline", "mode", "status", "level", "org"].filter((key) => state[key] !== "Все").length;
+        }
+
+        function renderChips(container, items, activeValue, onSelect) {
+          container.innerHTML = items.map((item) => {
+            const active = item.value === activeValue;
+            const dot = item.dotClass ? `<span class="chip-dot ${item.dotClass}" aria-hidden="true"></span>` : "";
+            return `<button type="button" class="chip${active ? " is-active" : ""}${item.dotClass ? " chip-with-dot" : ""}" data-value="${escapeHtml(item.value)}">${dot}${escapeHtml(item.label)}</button>`;
+          }).join("");
+          container.querySelectorAll(".chip").forEach((button) => {
+            button.addEventListener("click", () => onSelect(button.dataset.value));
           });
         }
 
-        function initTheme() {
-          const savedMode = localStorage.getItem(THEME_KEY) || "auto";
-          applyTheme(savedMode);
+        function renderThemeChips() {
+          const items = [
+            { value: "auto", label: "Авто" },
+            { value: "dark", label: mqMobile.matches ? "Тёмн." : "Тёмная" },
+            { value: "light", label: mqMobile.matches ? "Свет." : "Светлая" },
+          ];
+          renderChips(document.getElementById("themeChips"), items, state.theme, (value) => {
+            state.theme = value;
+            localStorage.setItem(THEME_KEY, value);
+            applyThemeAttr();
+            renderThemeChips();
+            renderAll();
+          });
         }
 
-        function initCalendarView() {
-          const saved = localStorage.getItem(CALENDAR_VIEW_KEY) || "auto";
-          applyCalendarView(saved);
+        function renderFilterChips() {
+          const monthItems = [{ value: "Все", label: "Все" }].concat(SEASON_MONTHS.map((m) => ({ value: m, label: m })));
+          renderChips(document.getElementById("monthChips"), monthItems, state.month, (value) => {
+            state.month = value;
+            renderAll();
+          });
+
+          const disciplineItems = [
+            { value: "Все", label: "Все" },
+            { value: "Шоссе", label: "Шоссе", dotClass: "dot-road" },
+            { value: "МТБ", label: "МТБ", dotClass: "dot-mtb" },
+            { value: "Грэвел", label: "Грэвел", dotClass: "dot-gravel" },
+          ];
+          const modeItems = [
+            { value: "Все", label: "Все" },
+            { value: "Онлайн", label: "Онлайн" },
+            { value: "Оффлайн", label: "Оффлайн" },
+          ];
+          const statusItems = [
+            { value: "Все", label: "Все" },
+            { value: "Скоро", label: "Скоро" },
+            { value: "Прошла", label: "Прошла" },
+            { value: "Дата уточняется", label: "Дата уточняется" },
+          ];
+          const levelItems = [
+            { value: "Все", label: "Все" },
+            { value: "Официальные", label: "Официальные" },
+            { value: "Любительские", label: "Любительские" },
+          ];
+
+          const onDiscipline = (value) => { state.discipline = value; renderAll(); };
+          const onMode = (value) => { state.mode = value; renderAll(); };
+          const onStatus = (value) => { state.status = value; renderAll(); };
+          const onLevel = (value) => { state.level = value; renderAll(); };
+
+          renderChips(document.getElementById("disciplineChips"), disciplineItems, state.discipline, onDiscipline);
+          renderChips(document.getElementById("disciplineChipsMobile"), disciplineItems, state.discipline, onDiscipline);
+          renderChips(document.getElementById("modeChips"), modeItems, state.mode, onMode);
+          renderChips(document.getElementById("modeChipsMobile"), modeItems, state.mode, onMode);
+          renderChips(document.getElementById("statusChips"), statusItems, state.status, onStatus);
+          renderChips(document.getElementById("statusChipsMobile"), statusItems, state.status, onStatus);
+          renderChips(document.getElementById("levelChips"), levelItems, state.level, onLevel);
+          renderChips(document.getElementById("levelChipsMobile"), levelItems, state.level, onLevel);
         }
 
-        themeButton.addEventListener("click", () => {
-          const isHidden = themePopover.classList.toggle("hidden");
-          themeButton.setAttribute("aria-expanded", String(!isHidden));
+        function renderViewChips() {
+          const desktopItems = DESKTOP_VIEWS.map((view) => ({ value: view, label: DESKTOP_VIEW_LABELS[view] }));
+          const mobileItems = MOBILE_VIEWS.map((view) => ({ value: view, label: MOBILE_VIEW_LABELS[view] }));
+          const onView = (value) => {
+            state.view = value;
+            localStorage.setItem(VIEW_KEY, value);
+            renderAll();
+          };
+          renderChips(document.getElementById("viewChipsDesktop"), desktopItems, state.view, onView);
+          renderChips(document.getElementById("viewChipsMobile"), mobileItems, state.view, onView);
+        }
+
+        function renderOrgSelects() {
+          const organizers = ["Все организаторы", ...new Set(RACES.map((race) => race.organizer))];
+          const options = organizers.map((org) => {
+            const value = org === "Все организаторы" ? "Все" : org;
+            const selected = state.org === value ? " selected" : "";
+            return `<option value="${escapeHtml(value)}"${selected}>${escapeHtml(org)}</option>`;
+          }).join("");
+
+          const desktop = document.getElementById("orgSelectDesktop");
+          const mobile = document.getElementById("orgSelectMobile");
+          desktop.innerHTML = options;
+          mobile.innerHTML = options;
+
+          const onChange = (event) => {
+            state.org = event.target.value;
+            renderAll();
+          };
+          desktop.onchange = onChange;
+          mobile.onchange = onChange;
+        }
+
+        function renderNextRace() {
+          const upcoming = RACES
+            .filter((race) => race.start && race.datePrecision !== "approx")
+            .map((race) => ({ race, ms: raceStartMs(race) }))
+            .filter((item) => item.ms != null && item.ms > state.now)
+            .sort((a, b) => a.ms - b.ms);
+
+          const next = upcoming[0]?.race || RACES[RACES.length - 1];
+          const title = document.getElementById("nextRaceTitle");
+          const meta = document.getElementById("nextRaceMeta");
+
+          if (next.eventUrl) {
+            title.textContent = next.name;
+            title.href = next.eventUrl;
+            title.target = "_blank";
+            title.removeAttribute("aria-disabled");
+          } else {
+            title.textContent = next.name;
+            title.removeAttribute("href");
+            title.removeAttribute("target");
+            title.setAttribute("aria-disabled", "true");
+          }
+
+          meta.textContent = `${next.dateLabel} · ${next.organizer}`;
+
+          const heroMedia = document.getElementById("heroMedia");
+          const placeholder = document.getElementById("heroPlaceholder");
+          heroMedia.querySelectorAll(".hero-media-image").forEach((node) => node.remove());
+          if (next.image) {
+            placeholder.classList.add("hidden");
+            const img = document.createElement("img");
+            img.className = "hero-media-image";
+            img.src = next.image;
+            img.alt = next.name;
+            heroMedia.appendChild(img);
+          } else {
+            placeholder.classList.remove("hidden");
+          }
+
+          const targetMs = upcoming[0] ? upcoming[0].ms : null;
+          renderCountdown(targetMs);
+        }
+
+        function renderCountdown(targetMs) {
+          const container = document.getElementById("countdown");
+          const showSeconds = !mqMobile.matches;
+          let units;
+
+          if (!targetMs) {
+            units = showSeconds
+              ? [
+                  { v: "0", l: pluralRu(0, "день", "дня", "дней") },
+                  { v: "00", l: pluralRu(0, "час", "часа", "часов") },
+                  { v: "00", l: pluralRu(0, "минута", "минуты", "минут") },
+                  { v: "00", l: pluralRu(0, "секунда", "секунды", "секунд") },
+                ]
+              : [
+                  { v: "0", l: pluralRu(0, "день", "дня", "дней") },
+                  { v: "00", l: pluralRu(0, "час", "часа", "часов") },
+                  { v: "00", l: pluralRu(0, "минута", "минуты", "минут") },
+                ];
+          } else {
+            let ms = Math.max(0, targetMs - state.now);
+            const d = Math.floor(ms / 86400000); ms -= d * 86400000;
+            const h = Math.floor(ms / 3600000); ms -= h * 3600000;
+            const m = Math.floor(ms / 60000); ms -= m * 60000;
+            const s = Math.floor(ms / 1000);
+            const pad = (n) => String(n).padStart(2, "0");
+            units = [
+              { v: String(d), l: pluralRu(d, "день", "дня", "дней") },
+              { v: pad(h), l: pluralRu(h, "час", "часа", "часов") },
+              { v: pad(m), l: pluralRu(m, "минута", "минуты", "минут") },
+            ];
+            if (showSeconds) {
+              units.push({ v: pad(s), l: pluralRu(s, "секунда", "секунды", "секунд") });
+            }
+          }
+
+          container.innerHTML = units.map((unit) => `
+            <div class="countdown-unit">
+              <div class="countdown-value">${escapeHtml(unit.v)}</div>
+              <div class="countdown-label">${escapeHtml(unit.l)}</div>
+            </div>
+          `).join("");
+        }
+
+        function statusClass(status) {
+          return status === "soon" ? "status-soon" : status === "past" ? "status-past" : "status-tbd";
+        }
+
+        function renderCards(list) {
+          const groups = SEASON_MONTHS
+            .map((month) => ({
+              month,
+              races: list.filter((race) => race.month === month),
+            }))
+            .filter((group) => group.races.length);
+
+          const html = groups.map((group) => {
+            const cards = group.races.map((race) => {
+              const status = raceStatus(race);
+              const type = typeKey(race);
+              const results = race.resultsUrl
+                ? `<a class="btn-outline results-link" href="${escapeHtml(race.resultsUrl)}" target="_blank" rel="noreferrer">Результаты</a>`
+                : "";
+
+              return `
+                <article class="event-card" data-type="${type}">
+                  <div class="event-card-date">
+                    <div class="event-day-big">${escapeHtml(dayBig(race))}</div>
+                    <div class="event-day-sub">${escapeHtml(daySub(race))}</div>
+                  </div>
+                  <div class="event-card-main">
+                    <div class="event-card-top-mobile">
+                      <div class="event-card-date-mobile">
+                        <span class="chip-dot dot-${type}" aria-hidden="true"></span>
+                        <span>${escapeHtml(race.dateLabel)}</span>
+                      </div>
+                      <span class="status-pill ${statusClass(status)}">${STATUS_LABELS[status]}</span>
+                    </div>
+                    ${linkOrText(race.eventUrl, race.name, "event-title")}
+                    <div class="event-meta">
+                      <span class="disc-badge disc-${type}">${escapeHtml(typeLabel(race))}</span>
+                      ${modeBadge(race)}
+                      ${linkOrText(race.organizerUrl, race.organizer, "event-org")}
+                      <span class="event-meta-sep" aria-hidden="true">·</span>
+                      <span>${escapeHtml(LEVEL_LABELS[race.level])}</span>
+                    </div>
+                    ${results ? `<div class="event-card-actions-mobile">${results}</div>` : ""}
+                  </div>
+                  <div class="event-card-side">
+                    <span class="status-pill ${statusClass(status)}">${STATUS_LABELS[status]}</span>
+                    ${results}
+                  </div>
+                </article>
+              `;
+            }).join("");
+
+            return `
+              <section class="month-group">
+                <div class="month-group-head">
+                  <h2 class="month-group-title">${escapeHtml(group.month)}</h2>
+                  <div class="month-group-line" aria-hidden="true"></div>
+                  <span class="month-group-count">${group.races.length} ${pluralStarts(group.races.length)}</span>
+                </div>
+                <div class="month-group-list">${cards}</div>
+              </section>
+            `;
+          }).join("");
+
+          document.getElementById("cardsView").innerHTML = html;
+        }
+
+        function renderTable(list) {
+          const rows = list.map((race) => {
+            const results = race.resultsUrl
+              ? `<a class="table-results-link" href="${escapeHtml(race.resultsUrl)}" target="_blank" rel="noreferrer">Открыть</a>`
+              : `<span class="table-results-empty">—</span>`;
+            return `
+              <div class="table-row">
+                <span class="table-cell table-cell-date">${escapeHtml(race.dateLabel)}</span>
+                ${linkOrText(race.eventUrl, race.name, "table-cell table-cell-title")}
+                ${linkOrText(race.organizerUrl, race.organizer, "table-cell table-cell-org")}
+                <span class="table-cell table-cell-results">${results}</span>
+              </div>
+            `;
+          }).join("");
+
+          document.getElementById("tableView").innerHTML = `
+            <div class="table-shell">
+              <div class="table-head">
+                <span>Дата</span><span>Мероприятие</span><span>Организатор</span><span>Результаты</span>
+              </div>
+              ${rows}
+            </div>
+          `;
+        }
+
+        function calendarCells(monthName, list) {
+          const monthIndex = MONTH_INDEX[monthName];
+          const offset = (new Date(2026, monthIndex, 1).getDay() + 6) % 7;
+          const daysInMonth = new Date(2026, monthIndex + 1, 0).getDate();
+          const cells = [];
+
+          for (let i = 0; i < offset; i += 1) {
+            cells.push({ day: "", events: [], empty: true });
+          }
+
+          for (let day = 1; day <= daysInMonth; day += 1) {
+            const iso = `2026-${String(monthIndex + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+            const events = list.filter((race) => race.start && race.end && race.start <= iso && race.end >= iso);
+            cells.push({ day: String(day), events, empty: false });
+          }
+
+          return cells;
+        }
+
+        function renderGrid(list) {
+          const gridMonth = state.month === "Все" ? "Август" : state.month;
+          const cells = calendarCells(gridMonth, list);
+          const weekdays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
+          const monthList = list.filter((race) => race.month === gridMonth);
+
+          const weekdayHtml = weekdays.map((day) => `<div class="grid-weekday">${day}</div>`).join("");
+          const cellsHtml = cells.map((cell) => {
+            if (cell.empty) {
+              return `<div class="grid-cell grid-cell-empty"></div>`;
+            }
+            const eventsHtml = cell.events.map((race) => {
+              const type = typeKey(race);
+              if (mqMobile.matches) {
+                return `<span class="grid-dot dot-${type}" aria-hidden="true"></span>`;
+              }
+              if (race.eventUrl) {
+                return `<a class="grid-event disc-${type}" href="${escapeHtml(race.eventUrl)}" target="_blank" rel="noreferrer">${escapeHtml(shortTitle(race.name))}</a>`;
+              }
+              return `<span class="grid-event disc-${type}">${escapeHtml(shortTitle(race.name))}</span>`;
+            }).join("");
+            return `
+              <div class="grid-cell${cell.events.length ? " has-events" : ""}">
+                <div class="grid-day">${escapeHtml(cell.day)}</div>
+                <div class="grid-events">${eventsHtml}</div>
+              </div>
+            `;
+          }).join("");
+
+          const listHtml = monthList.map((race) => {
+            const type = typeKey(race);
+            return `
+              <div class="grid-list-item">
+                <span class="grid-dot dot-${type}" aria-hidden="true"></span>
+                <span class="grid-list-day">${escapeHtml(dayBig(race))}</span>
+                ${linkOrText(race.eventUrl, race.name, "grid-list-title")}
+              </div>
+            `;
+          }).join("");
+
+          document.getElementById("gridView").innerHTML = `
+            <section class="grid-section">
+              <h2 class="grid-title">${escapeHtml(gridMonth)}</h2>
+              <div class="grid-calendar">
+                ${weekdayHtml}
+                ${cellsHtml}
+              </div>
+              <div class="grid-list">${listHtml}</div>
+            </section>
+          `;
+        }
+
+        function normalizeView() {
+          if (mqMobile.matches && !MOBILE_VIEWS.includes(state.view)) {
+            state.view = "cards";
+          }
+          if (!mqMobile.matches && state.view === "cards") {
+            /* keep cards on desktop */
+          }
+        }
+
+        function renderContent() {
+          normalizeView();
+          const list = filteredRaces();
+          document.getElementById("resultsCount").textContent = `Найдено ${list.length} ${pluralStarts(list.length)}`;
+
+          const empty = document.getElementById("emptyState");
+          const cardsView = document.getElementById("cardsView");
+          const tableView = document.getElementById("tableView");
+          const gridView = document.getElementById("gridView");
+
+          if (!list.length) {
+            cardsView.innerHTML = "";
+            tableView.innerHTML = "";
+            gridView.innerHTML = "";
+            empty.classList.remove("hidden");
+            cardsView.classList.add("hidden");
+            tableView.classList.add("hidden");
+            gridView.classList.add("hidden");
+            return;
+          }
+
+          empty.classList.add("hidden");
+          renderCards(list);
+          renderTable(list);
+          renderGrid(list);
+
+          cardsView.classList.toggle("hidden", state.view !== "cards");
+          tableView.classList.toggle("hidden", state.view !== "table" || mqMobile.matches);
+          gridView.classList.toggle("hidden", state.view !== "grid");
+        }
+
+        function renderFiltersUi() {
+          const count = activeFilterCount();
+          const badge = document.getElementById("filtersBadge");
+          badge.textContent = count ? ` · ${count}` : "";
+          document.getElementById("filtersToggle").classList.toggle("is-open", state.showFilters || count > 0);
+          document.getElementById("filtersMobilePanel").classList.toggle("hidden", !state.showFilters);
+          document.getElementById("filtersToggle").setAttribute("aria-expanded", String(state.showFilters));
+        }
+
+        function renderAll() {
+          applyThemeAttr();
+          document.getElementById("heroRaceCount").textContent = `${RACES.length} ${pluralStarts(RACES.length)}`;
+          renderThemeChips();
+          renderFilterChips();
+          renderViewChips();
+          renderOrgSelects();
+          renderNextRace();
+          renderContent();
+          renderFiltersUi();
+        }
+
+        document.getElementById("filtersToggle").addEventListener("click", () => {
+          state.showFilters = !state.showFilters;
+          renderFiltersUi();
         });
 
-        themeOptions.forEach((button) => {
-          button.addEventListener("click", () => {
-            const mode = button.dataset.themeMode;
-            localStorage.setItem(THEME_KEY, mode);
-            applyTheme(mode);
-            themePopover.classList.add("hidden");
-            themeButton.setAttribute("aria-expanded", "false");
-          });
-        });
-
-        calendarViewOptions.forEach((button) => {
-          button.addEventListener("click", () => {
-            const mode = button.dataset.calendarView;
-            localStorage.setItem(CALENDAR_VIEW_KEY, mode);
-            applyCalendarView(mode);
-            themePopover.classList.add("hidden");
-            themeButton.setAttribute("aria-expanded", "false");
-          });
-        });
-
-        document.addEventListener("click", (event) => {
-          if (!themeMenu.contains(event.target)) {
-            themePopover.classList.add("hidden");
-            themeButton.setAttribute("aria-expanded", "false");
+        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+          if (state.theme === "auto") {
+            applyThemeAttr();
+            renderAll();
           }
         });
 
-        initTheme();
-        initCalendarView();
-      })();
-    </script>
-    <script>
-      (() => {
-        const L = { approx: "Дата уточняется", past: "Прошла", current: "Сегодня", upcoming: "Скоро" };
+        mqMobile.addEventListener("change", () => {
+          normalizeView();
+          renderThemeChips();
+          renderViewChips();
+          renderAll();
+        });
 
-        function statusForElement(el, now) {
-          if (el.dataset.datePrecision === "approx") {
-            return { key: "approx", label: L.approx };
+        let statusTick = 0;
+        setInterval(() => {
+          state.now = Date.now();
+          renderCountdown(
+            RACES
+              .filter((race) => race.start && race.datePrecision !== "approx")
+              .map((race) => raceStartMs(race))
+              .filter((ms) => ms != null && ms > state.now)
+              .sort((a, b) => a - b)[0] ?? null,
+          );
+          statusTick += 1;
+          if (statusTick >= 60) {
+            statusTick = 0;
+            renderNextRace();
+            renderContent();
           }
-          const startStr = el.dataset.start || "";
-          const endStr = el.dataset.end || "";
-          if (!startStr || !endStr) {
-            return { key: "approx", label: L.approx };
-          }
-          const start = new Date(`${startStr}T00:00:00`);
-          const end = new Date(`${endStr}T00:00:00`);
-          const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-          if (end < today) return { key: "past", label: L.past };
-          if (start <= today && end >= today) return { key: "current", label: L.current };
-          return { key: "upcoming", label: L.upcoming };
-        }
+        }, 1000);
 
-        function applyCard(card, s) {
-          card.dataset.status = s.key;
-          const badge = card.querySelector('[data-role="race-status"]');
-          if (!badge) return;
-          badge.textContent = s.label;
-          badge.className = `status race-status-label status-${s.key}${s.key === "upcoming" ? " hidden" : ""}`;
-        }
-
-        function applyRow(row, s) {
-          row.dataset.status = s.key;
-        }
-
-        function isVisible(el) {
-          if (!el || !el.getClientRects) return false;
-          return el.getClientRects().length > 0;
-        }
-
-        function pickFirstTarget(root, itemSelector) {
-          // Приоритет: текущие -> ближайшие будущие -> (fallback) первое не-прошедшее (если есть)
-          const current = root.querySelector(`${itemSelector}[data-status="current"]`);
-          if (current) return current;
-          const notPast = root.querySelectorAll(`${itemSelector}[data-status]:not([data-status="past"])`);
-          if (notPast && notPast.length > 0) return notPast[0];
-
-          // Если всё прошла — просто показываем самую первую запись.
-          const firstAny = root.querySelector(itemSelector);
-          return firstAny || null;
-        }
-
-        function scrollToFirstRelevant() {
-          const calendarRoot = document.getElementById("calendar");
-          const tableBody = document.getElementById("tableBody");
-          const tableRoot = tableBody ? tableBody.closest(".table-wrap") : null;
-
-          // В режиме "auto" может быть видим либо календарь, либо таблица (в зависимости от ширины).
-          const useCalendar = isVisible(calendarRoot);
-          const root = useCalendar ? calendarRoot : tableRoot;
-          if (!root) return;
-
-          const itemSelector = useCalendar ? ".race-card" : ".race-row";
-          const target = pickFirstTarget(root, itemSelector);
-          if (!target) return;
-
-          // Без smooth-скролла, чтобы не спорить с сохраненным поведением браузера.
-          target.scrollIntoView({ block: "start", behavior: "auto" });
-        }
-
-        function refresh() {
-          const now = new Date();
-          document.querySelectorAll("#calendar .race-card").forEach((card) => {
-            applyCard(card, statusForElement(card, now));
-          });
-          document.querySelectorAll("#tableBody .race-row").forEach((row) => {
-            applyRow(row, statusForElement(row, now));
-          });
-        }
-
-        refresh();
-        scrollToFirstRelevant();
         document.addEventListener("visibilitychange", () => {
-          if (document.visibilityState === "visible") refresh();
+          if (document.visibilityState === "visible") {
+            state.now = Date.now();
+            renderNextRace();
+            renderContent();
+          }
         });
+
+        renderAll();
       })();
     </script>
   </body>
