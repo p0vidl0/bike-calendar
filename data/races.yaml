@@ -198,7 +198,7 @@ races:
     organizerUrl: "https://vk.ru/kk_omsk"
     eventUrl: "https://vk.ru/wall-206728976_596"
     image: "races/2026/мяу-2.jpg"
-    resultsUrl: null
+    resultsUrl: "https://vk.ru/wall-206728976_600"
 
   - date: "2026-08-16"
     datePrecision: exact
