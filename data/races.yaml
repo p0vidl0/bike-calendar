@@ -120,7 +120,7 @@ races:
     resultsUrl: "https://vk.ru/wall-206728976_533"
 
   - date: "2026-08-08"
-    datePrecision: approx
+    datePrecision: exact
     type: gravel
     level: amateur
     mode: offline
