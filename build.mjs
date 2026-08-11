@@ -14,7 +14,9 @@ const VALID_PRECISIONS = new Set(["exact", "range", "approx"]);
 const DEFAULT_START_TIME = "10:00";
 const TIMEZONE_OFFSET = "+06:00";
 const DEFAULT_IMAGES = {
+  road: "./assets/races/road.jpg",
   mtb: "./assets/races/mtb.jpg",
+  gravel: "./assets/races/gravel.jpg",
 };
 
 const MONTHS_RU = [
@@ -110,8 +112,8 @@ function normalizeRace(raw, index) {
   const end = toDate(raw.date?.end || raw.date);
   const startTime = parseStartTime(raw.startTime, index);
   let image = resolveImagePath(raw.image, index);
-  if (!image && raw.type === "mtb") {
-    image = DEFAULT_IMAGES.mtb;
+  if (!image && DEFAULT_IMAGES[raw.type]) {
+    image = DEFAULT_IMAGES[raw.type];
   }
 
   if (startTime && datePrecision !== "exact") {

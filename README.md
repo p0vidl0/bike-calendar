@@ -31,7 +31,7 @@
   - для `range`/`approx`: объект `start` и `end` в формате `YYYY-MM-DD`
 - `dateText` (опционально) - человекочитаемый текст даты, полезно для `approx`
 - `startTime` (опционально) - точное время старта в формате `HH:MM` (только для `exact`; если не указано, countdown использует 10:00 по Омску)
-- `image` (опционально) - путь к изображению внутри `assets/`, например `races/prudki.webp`; для `mtb` без своего изображения используется `assets/races/mtb.jpg`
+- `image` (опционально) - путь к изображению внутри `assets/`, например `races/prudki.webp`; без своего изображения используются дефолты: `assets/races/road.jpg` для `road`, `assets/races/mtb.jpg` для `mtb`, `assets/races/gravel.jpg` для `gravel`
 - `eventUrl`, `organizerUrl` (опционально) - ссылки на страницу старта и организатора
 
 ## Как добавить новое мероприятие
