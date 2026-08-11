@@ -119,10 +119,7 @@ races:
     eventUrl: "https://vk.ru/wall-206728976_487"
     resultsUrl: "https://vk.ru/wall-206728976_533"
 
-  - dateText: "Июль-август"
-    date:
-      start: "2026-07-01"
-      end: "2026-08-31"
+  - date: "2026-08-08"
     datePrecision: approx
     type: gravel
     level: amateur
@@ -130,7 +127,8 @@ races:
     name: "Gravel’20"
     organizer: "Сметюк Е."
     organizerUrl: "https://vk.ru/id23079204"
-    resultsUrl: null
+    resultsUrl: "https://vk.ru/wall-185909723_1098"
+    eventUrl: "https://vk.ru/wall-185909723_1094"
 
   - date: "2026-06-27"
     datePrecision: exact
