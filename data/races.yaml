@@ -200,6 +200,15 @@ races:
     image: "races/2026/мяу-2.jpg"
     resultsUrl: "https://vk.ru/wall-206728976_600"
 
+  - date: "2026-08-08"
+    datePrecision: exact
+    type: road
+    level: amateur
+    mode: offline
+    name: "TT Fight Club, 1 этап: Хвойный"
+    organizer: "TT Fight Club"
+    resultsUrl: null
+
   - date: "2026-08-16"
     datePrecision: exact
     type: mtb
@@ -238,6 +247,15 @@ races:
     name: "5 этап: Кросс-кантри велогонка «Карьер»"
     organizer: "Amateur Cycling League"
     organizerUrl: "https://vk.ru/kk_omsk"
+    resultsUrl: null
+
+  - date: "2026-08-29"
+    datePrecision: exact
+    type: road
+    level: amateur
+    mode: offline
+    name: "TT Fight Club, 2 этап: Ульяновка"
+    organizer: "TT Fight Club"
     resultsUrl: null
 
   - date: "2026-08-23"
@@ -283,6 +301,15 @@ races:
     name: "6 этап: Кросс-кантри велогонка «Финал сезона»"
     organizer: "Amateur Cycling League"
     organizerUrl: "https://vk.ru/kk_omsk"
+    resultsUrl: null
+
+  - date: "2026-09-19"
+    datePrecision: exact
+    type: road
+    level: amateur
+    mode: offline
+    name: "TT Fight Club, 3 этап: Сыропятское"
+    organizer: "TT Fight Club"
     resultsUrl: null
 
   - dateText: "Сентябрь"
