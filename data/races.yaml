@@ -218,9 +218,10 @@ races:
     name: "Omsk Gravel Classic (Strava)"
     organizer: "Сметюк Е."
     organizerUrl: "https://vk.ru/id23079204"
+    eventUrl: "https://vk.ru/wall-185909723_1100"
     resultsUrl: null
 
-  - date: "2026-08-16"
+  - date: "2026-09-20"
     datePrecision: exact
     type: road
     level: amateur
